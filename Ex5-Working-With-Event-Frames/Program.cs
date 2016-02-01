@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using External;
 
-namespace Ex5_Working_With_Event_Frames
+namespace Ex5_Working_With_Event_Frames_Sln
 {
     class Program
     {

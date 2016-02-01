@@ -1,7 +1,7 @@
 ﻿using System;
 using External;
 
-namespace Ex2_Building_AF_Database
+namespace Ex4_Building_AF_Hierarchy
 {
     class Program
     {

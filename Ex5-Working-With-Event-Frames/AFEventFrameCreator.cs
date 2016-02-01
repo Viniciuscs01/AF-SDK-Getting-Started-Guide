@@ -9,7 +9,7 @@ using OSIsoft.AF.EventFrame;
 using OSIsoft.AF.Time;
 using External;
 
-namespace Ex5_Working_With_Event_Frames
+namespace Ex5_Working_With_Event_Frames_Sln
 {
     public class AFEventFrameCreator
     {

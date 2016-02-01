@@ -3,7 +3,7 @@ using OSIsoft.AF;
 using OSIsoft.AF.Asset;
 using OSIsoft.AF.Search;
 
-namespace Ex3_Searching_For_Assets_Sln
+namespace Ex2_Searching_For_Assets_Sln
 {
     public class AFAssetSearcher
     {

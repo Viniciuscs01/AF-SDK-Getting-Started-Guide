@@ -1,7 +1,7 @@
 ﻿using System;
 using External;
 
-namespace Ex3_Searching_For_Assets_Sln
+namespace Ex2_Searching_For_Assets_Sln
 {
     class Program
     {

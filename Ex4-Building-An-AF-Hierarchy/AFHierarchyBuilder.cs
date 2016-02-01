@@ -4,7 +4,7 @@ using OSIsoft.AF.Asset;
 using OSIsoft.AF.UnitsOfMeasure;
 using External;
 
-namespace Ex2_Building_AF_Database
+namespace Ex4_Building_AF_Hierarchy
 {
     public class AFHierarchyBuilder
     {
