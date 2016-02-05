@@ -14,7 +14,7 @@ namespace Ex1_Connection_And_Hierarchy_Basics
 
         public AFPrinter(string server, string database)
         {
-            // Your code here
+            // Your code here. This constructor should set the _database variable.
         }
 
         public void PrintRootElements()

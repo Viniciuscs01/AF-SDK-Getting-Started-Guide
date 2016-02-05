@@ -35,7 +35,7 @@ namespace Ex5_Working_With_Event_Frames_Sln
             usage.DefaultUOM = _database.PISystem.UOMDatabase.UOMs["kilowatt hour"];
 
             _database.CheckIn();
-        }
+        } 
 
         public void CreateEventFrames()
         {
@@ -141,6 +141,8 @@ namespace Ex5_Working_With_Event_Frames_Sln
                     sortOrder: AFSortOrder.Ascending
                     );
 
+                // This loads all the attributes in one call to the AF Server.
+                // This prevents the loop below from making one call per iteration.
                 AFEventFrame.LoadEventFrames(efs);
 
                 foreach (AFEventFrame ef in efs)
