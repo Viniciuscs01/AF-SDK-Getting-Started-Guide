@@ -161,7 +161,6 @@ namespace Ex5_Working_With_Event_Frames_Sln
 
                 startIndex += pageSize;
             } while (efs != null && efs.Count > 0);
-
         }
     }
 }

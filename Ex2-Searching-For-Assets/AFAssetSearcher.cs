@@ -41,6 +41,5 @@ namespace Ex2_Searching_For_Assets
         {
             // Your code here
         }
-
     }
 }
