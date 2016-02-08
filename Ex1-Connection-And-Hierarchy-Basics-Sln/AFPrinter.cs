@@ -27,7 +27,7 @@ namespace Ex1_Connection_And_Hierarchy_Basics_Sln
 
         public void PrintElementTemplates()
         {
-            AFElementTemplates elemTemplates = _database.ElementTemplates;
+            AFNamedCollectionList<AFElementTemplate> elemTemplates = _database.ElementTemplates.FilterBy(typeof(AFElement));
             foreach (AFElementTemplate elemTemp in elemTemplates)
             {
                 // Note: An alternative and faster approach is to use eTemp.CategoriesString

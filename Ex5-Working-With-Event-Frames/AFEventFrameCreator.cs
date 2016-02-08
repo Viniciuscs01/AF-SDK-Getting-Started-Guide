@@ -24,9 +24,15 @@ namespace Ex5_Working_With_Event_Frames_Sln
 
         public void CreateEventFrameTemplate()
         {
+            if (_database.ElementTemplates.Contains("Daily Usage"))
+            {
+                _eventFrameTemplate = _database.ElementTemplates["Daily Usage"];
+                return;
+            }
+
             _eventFrameTemplate = _database.ElementTemplates.Add("Daily Usage");
             _eventFrameTemplate.InstanceType = typeof(AFEventFrame);
-            _eventFrameTemplate.NamingPattern = @"%TEMPLATE%-%ELEMENT%-%STARTTIME:yyyy-MM-dd%*";
+            _eventFrameTemplate.NamingPattern = @"%TEMPLATE%-%ELEMENT%-%STARTTIME:yyyy-MM-dd%-EF*";
 
             AFAttributeTemplate usage = _eventFrameTemplate.AttributeTemplates.Add("Average Energy Usage");
             usage.Type = typeof(double);
@@ -57,9 +63,9 @@ namespace Ex5_Working_With_Event_Frames_Sln
 
                 foreach (AFElement meter in meters)
                 {
-                    foreach (int day in Enumerable.Range(1, 31))
+                    foreach (int day in Enumerable.Range(1, 5))
                     {
-                        DateTime start = new DateTime(2015, 12, day, 0, 0, 0, DateTimeKind.Local);
+                        DateTime start = new DateTime(2016, 2, day, 0, 0, 0, DateTimeKind.Local);
                         AFTime startTime = new AFTime(start);
                         AFTime endTime = new AFTime(start.AddDays(1));
                         AFEventFrame ef = new AFEventFrame(_database, "*", _eventFrameTemplate);
@@ -80,7 +86,7 @@ namespace Ex5_Working_With_Event_Frames_Sln
             const int pageSize = 1000;
             int startIndex = 0;
 
-            AFTime startTime = new AFTime(new DateTime(2015, 12, 1, 0, 0, 0, DateTimeKind.Local));
+            AFTime startTime = new AFTime(new DateTime(2016, 2, 1, 0, 0, 0, DateTimeKind.Local));
             AFNamedCollectionList<AFEventFrame> efs;
             do
             {
@@ -116,8 +122,8 @@ namespace Ex5_Working_With_Event_Frames_Sln
             const int pageSize = 1000;
             int startIndex = 0;
 
-            AFTime startTime = new AFTime(new DateTime(2015, 12, 29, 0, 0, 0, DateTimeKind.Local));
-            AFTime endTime = new AFTime(new DateTime(2015, 12, 31, 0, 0, 0, DateTimeKind.Local));
+            AFTime startTime = new AFTime(new DateTime(2016, 2, 1, 0, 0, 0, DateTimeKind.Local));
+            AFTime endTime = new AFTime(new DateTime(2016, 2, 6, 0, 0, 0, DateTimeKind.Local));
 
             AFNamedCollectionList<AFEventFrame> efs;
             do

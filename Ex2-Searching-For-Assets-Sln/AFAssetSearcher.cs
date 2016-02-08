@@ -130,7 +130,7 @@ namespace Ex2_Searching_For_Assets_Sln
                                                     sortOrder: AFSortOrder.Ascending,
                                                     maxCount: 100);
 
-            Console.WriteLine("Found {0} attributes:", foundAttributes.Count);
+            Console.WriteLine("Found {0} attributes.", foundAttributes.Count);
         }
     }
 }
