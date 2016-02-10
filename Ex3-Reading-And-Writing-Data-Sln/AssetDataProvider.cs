@@ -23,6 +23,8 @@ namespace Ex3_Reading_And_Writing_Data_Sln
 
         public void PrintHistorical(string meterName, string startTime, string endTime)
         {
+            Console.WriteLine(string.Format("Print Historical Values - Meter: {0}, Start: {1}, End: {2}", meterName, startTime, endTime));
+
             AFAttribute attr = AFAttribute.FindAttribute(@"\Meters\" + meterName + @"|Energy Usage", _database);
 
             AFTime start = new AFTime(startTime);
@@ -39,10 +41,13 @@ namespace Ex3_Reading_And_Writing_Data_Sln
             {
                 Console.WriteLine("Timestamp (UTC): {0}, Value (kJ): {1}", val.Timestamp.UtcTime, val.Value);
             }
+            Console.WriteLine();
         }
 
         public void PrintInterpolated(string meterName, string startTime, string endTime, TimeSpan timeSpan)
         {
+            Console.WriteLine(string.Format("Print Interpolated Values - Meter: {0}, Start: {1}, End: {2}", meterName, startTime, endTime));
+
             AFAttribute attr = AFAttribute.FindAttribute(@"\Meters\" + meterName + @"|Energy Usage", _database);
 
             AFTime start = new AFTime(startTime);
@@ -60,12 +65,15 @@ namespace Ex3_Reading_And_Writing_Data_Sln
 
             foreach (AFValue val in vals)
             {
-                Console.WriteLine("Timestamp (Local): {0}, Value (kilowatt hour): {1}", val.Timestamp.LocalTime, val.Value);
+                Console.WriteLine("Timestamp (Local): {0}, Value (kWh): {1}", val.Timestamp.LocalTime, val.Value);
             }
+            Console.WriteLine();
         }
 
         public void PrintHourlyAverage(string meterName, string startTime, string endTime)
         {
+            Console.WriteLine(string.Format("Print Hourly Average - Meter: {0}, Start: {1}, End: {2}", meterName, startTime, endTime));
+
             AFAttribute attr = AFAttribute.FindAttribute(@"\Meters\" + meterName + @"|Energy Usage", _database);
 
             AFTime start = new AFTime(startTime);
@@ -82,12 +90,16 @@ namespace Ex3_Reading_And_Writing_Data_Sln
 
             foreach (AFValue val in vals[AFSummaryTypes.Average])
             {
-                Console.WriteLine("Timestamp (Local): {0}, Value (kilowatt hour): {1}", val.Timestamp.LocalTime, val.Value);
+                Console.WriteLine("Timestamp (Local): {0}, Value (kWh): {1}", val.Timestamp.LocalTime, val.Value);
             }
+
+            Console.WriteLine();
         }
 
         public void PrintEnergyUsageAtTime(string timeStamp)
         {
+            Console.WriteLine("Print Energy Usage at Time: {0}", timeStamp);
+
             AFAttributeList attrList = GetAttributes();
 
             AFTime time = new AFTime(timeStamp);
@@ -96,15 +108,18 @@ namespace Ex3_Reading_And_Writing_Data_Sln
 
             foreach (AFValue val in vals)
             {
-                Console.WriteLine("Meter name: {0}, Timestamp (Local): {1}, Value (kilowatt hour): {2}", 
+                Console.WriteLine("Meter: {0}, Timestamp (Local): {1}, Value (kWh): {2}", 
                     val.Attribute.Element.Name,
                     val.Timestamp.LocalTime, 
                     val.Value);
             }
+            Console.WriteLine();
         }
 
         public void PrintDailyAverageEnergyUsage(string startTime, string endTime)
         {
+            Console.WriteLine(string.Format("Print Daily Energy Usage - Start: {0}, End: {1}", startTime, endTime));
+
             AFAttributeList attrList = GetAttributes();
 
             AFTime start = new AFTime(startTime);
@@ -131,17 +146,20 @@ namespace Ex3_Reading_And_Writing_Data_Sln
                 // Loop through values per attribute
                 foreach (AFValue val in dict[AFSummaryTypes.Average])
                 {
-                    Console.WriteLine("Timestamp (Local): {0}, Avg. Value (kilowatt hour): {1}",
+                    Console.WriteLine("Timestamp (Local): {0}, Avg. Value (kWh): {1}",
                         val.Timestamp.LocalTime,
                         val.Value);
                 }
                 Console.WriteLine();
 
             }
+            Console.WriteLine();
         }
 
         public void SwapValues(string meter1, string meter2, string startTime, string endTime)
         {
+            Console.WriteLine(string.Format("Swap values for meters: {0}, {1} between {2} and {3}", meter1, meter2, startTime, endTime));
+
             // NOTE: This method does not ensure that there is no data loss if there is failure.
             // Persist the data first in case you need to rollback.
 
@@ -182,6 +200,7 @@ namespace Ex3_Reading_And_Writing_Data_Sln
             valsCombined.AddRange(valsToAdd2);
 
             AFListData.UpdateValues(valsCombined, AFUpdateOption.Insert);
+            Console.WriteLine();
         }
 
         private AFAttributeList GetAttributes()

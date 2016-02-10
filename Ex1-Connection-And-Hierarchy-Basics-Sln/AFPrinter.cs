@@ -18,15 +18,18 @@ namespace Ex1_Connection_And_Hierarchy_Basics_Sln
 
         public void PrintRootElements()
         {
+            Console.WriteLine("Print Root Elements");
             AFElements elements = _database.Elements;
             foreach (AFElement e in elements)
             {
                 Console.WriteLine(e.Name);
             }
+            Console.WriteLine();
         }
 
         public void PrintElementTemplates()
         {
+            Console.WriteLine("Print Element Templates");
             AFNamedCollectionList<AFElementTemplate> elemTemplates = _database.ElementTemplates.FilterBy(typeof(AFElement));
             foreach (AFElementTemplate elemTemp in elemTemplates)
             {
@@ -41,30 +44,36 @@ namespace Ex1_Connection_And_Hierarchy_Basics_Sln
                 string categoriesString = string.Join(",", categories);
                 Console.WriteLine("Name: {0}, Categories: {1}", elemTemp.Name, elemTemp.CategoriesString);
             }
+            Console.WriteLine();
         }
 
         public void PrintAttributeTemplates(string elemTempName)
         {
+            Console.WriteLine("Print Attribute Templates for Element Template: {0}", elemTempName);
             AFElementTemplate elemTemp = _database.ElementTemplates[elemTempName];
             foreach (AFAttributeTemplate attrTemp in elemTemp.AttributeTemplates)
             {
                 string drName = attrTemp.DataReferencePlugIn == null ? "None" : attrTemp.DataReferencePlugIn.Name;
                 Console.WriteLine("Name: {0}, DRPlugin: {1}", attrTemp.Name, drName);
             }
+            Console.WriteLine();
         }
 
         public void PrintEnergyUOMs()
         {
+            Console.WriteLine("Print Energy UOMs");
             PISystem piSystem = _database.PISystem;
             UOMClass uomClass = piSystem.UOMDatabase.UOMClasses["Energy"];
             foreach (UOM uom in uomClass.UOMs)
             {
                 Console.WriteLine("UOM: {0}, Abbreviation: {1}", uom.Name, uom.Abbreviation);
             }
+            Console.WriteLine();
         }
 
         public void PrintEnumerationSets()
         {
+            Console.WriteLine("Print Enumeration Sets\n");
             AFEnumerationSets enumSets = _database.EnumerationSets;
             foreach (AFEnumerationSet enumSet in enumSets)
             {
@@ -81,6 +90,7 @@ namespace Ex1_Connection_And_Hierarchy_Basics_Sln
 
         public void PrintCategories()
         {
+            Console.WriteLine("Print Categories\n");
             AFCategories elemCategories = _database.ElementCategories;
             AFCategories attrCategories = _database.AttributeCategories;
 
@@ -89,14 +99,13 @@ namespace Ex1_Connection_And_Hierarchy_Basics_Sln
             {
                 Console.WriteLine(category.Name);
             }
-
             Console.WriteLine();
-
             Console.WriteLine("Attribute Categories");
             foreach (AFCategory category in attrCategories)
             {
                 Console.WriteLine(category.Name);
             }
+            Console.WriteLine();
         }
     }
 }

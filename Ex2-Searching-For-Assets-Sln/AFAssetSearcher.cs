@@ -17,6 +17,7 @@ namespace Ex2_Searching_For_Assets_Sln
 
         public void FindMetersByName(string elementNameFilter)
         {
+            Console.WriteLine("Find Meters by Name: {0}", elementNameFilter);
             AFNamedCollectionList<AFElement> foundElements = AFElement.FindElements(
                                                                 database: _database,
                                                                 searchRoot: null,
@@ -34,10 +35,12 @@ namespace Ex2_Searching_For_Assets_Sln
                     element.Template.Name,
                     element.CategoriesString);
             }
+            Console.WriteLine();
         }
 
         public void FindMetersByTemplate(string templateName)
         {
+            Console.WriteLine("Find Meters by Template: {0}", templateName);
             AFElementTemplate elemTemplate = _database.ElementTemplates[templateName];
 
             AFNamedCollectionList<AFElement> foundElements = AFElement.FindElementsByTemplate(
@@ -53,10 +56,12 @@ namespace Ex2_Searching_For_Assets_Sln
             {
                 Console.WriteLine("Element: {0}, Template: {1}", element.Name, element.Template.Name);
             }
+            Console.WriteLine();
         }
 
         public void FindMetersBySubstation(string substationLocation)
         {
+            Console.WriteLine("Find Meters by Substation: {0}", substationLocation);
             AFElementTemplate elemTemplate = _database.ElementTemplates["MeterBasic"];
             AFAttributeTemplate attrTemplate = elemTemplate.AttributeTemplates["Substation"];
 
@@ -80,10 +85,12 @@ namespace Ex2_Searching_For_Assets_Sln
                 meterNames[i++] = element.Name;
             }
             Console.WriteLine(string.Join(", ", meterNames));
+            Console.WriteLine();
         }
 
         public void FindMetersAboveUsage(double val)
         {
+            Console.WriteLine("Find Meters above Usage: {0}", val);
             AFElementTemplate elemTemplate = _database.ElementTemplates["MeterBasic"];
             AFAttributeTemplate attrTemplate = elemTemplate.AttributeTemplates["Energy Usage"];
 
@@ -106,10 +113,12 @@ namespace Ex2_Searching_For_Assets_Sln
                 meterNames[i++] = element.Name;
             }
             Console.WriteLine(string.Join(", ", meterNames));
+            Console.WriteLine();
         }
 
         public void FindBuildingInfo(string templateName)
         {
+            Console.WriteLine("Find Building Info: {0}", templateName);
             AFElementTemplate elemTemp = _database.ElementTemplates[templateName];
             AFCategory buildingInfoCat = _database.AttributeCategories["Building Info"];
 
@@ -131,6 +140,7 @@ namespace Ex2_Searching_For_Assets_Sln
                                                     maxCount: 100);
 
             Console.WriteLine("Found {0} attributes.", foundAttributes.Count);
+            Console.WriteLine();
         }
     }
 }
