@@ -7,7 +7,7 @@ namespace Ex4_Building_An_AF_Hierarchy_Sln
     {
         static void Main(string[] args)
         {
-            AFHierarchyBuilder builder = new AFHierarchyBuilder(Constants.AFSERVERNAME);
+            AFHierarchyBuilder builder = new AFHierarchyBuilder("PISRV01");
             builder.CreateDatabase();
             builder.CreateCategories();
             builder.CreateEnumerationSets();

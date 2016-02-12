@@ -8,7 +8,7 @@ namespace Ex2_Searching_For_Assets
         static void Main(string[] args)
         {
             // Uncomment the lines below in order to test
-            // AFAssetSearcher searcher = new AFAssetSearcher(Constants.AFSERVERNAME, "Magical Power Company");
+            // AFAssetSearcher searcher = new AFAssetSearcher("PISRV01", "Magical Power Company");
             // searcher.FindMetersByName("Meter00*");
             // searcher.FindMetersByTemplate("MeterBasic");
             // searcher.FindMetersBySubstation("Edinburgh");

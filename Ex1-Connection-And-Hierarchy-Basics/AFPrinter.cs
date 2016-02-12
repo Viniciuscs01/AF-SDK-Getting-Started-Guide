@@ -2,7 +2,6 @@
 using OSIsoft.AF;
 using OSIsoft.AF.Asset;
 using OSIsoft.AF.UnitsOfMeasure;
-using External;
 
 namespace Ex1_Connection_And_Hierarchy_Basics
 {

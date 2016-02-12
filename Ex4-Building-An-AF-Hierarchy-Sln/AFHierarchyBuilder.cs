@@ -2,7 +2,6 @@
 using OSIsoft.AF;
 using OSIsoft.AF.Asset;
 using OSIsoft.AF.UnitsOfMeasure;
-using External;
 
 namespace Ex4_Building_An_AF_Hierarchy_Sln
 {

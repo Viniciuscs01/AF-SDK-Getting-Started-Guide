@@ -7,7 +7,7 @@ namespace Ex1_Connection_And_Hierarchy_Basics_Sln
     {
         static void Main(string[] args)
         {
-            AFPrinter afPrinter = new AFPrinter(Constants.AFSERVERNAME, "Magical Power Company");
+            AFPrinter afPrinter = new AFPrinter("PISRV01", "Magical Power Company");
             afPrinter.PrintRootElements();
             afPrinter.PrintElementTemplates();
             afPrinter.PrintAttributeTemplates("MeterAdvanced");

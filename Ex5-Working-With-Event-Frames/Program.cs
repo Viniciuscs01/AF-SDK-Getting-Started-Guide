@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using External;
 
 namespace Ex5_Working_With_Event_Frames_Sln
@@ -11,7 +7,7 @@ namespace Ex5_Working_With_Event_Frames_Sln
     {
         static void Main(string[] args)
         {
-            AFEventFrameCreator efCreator = new AFEventFrameCreator(Constants.AFSERVERNAME, "Magical Power Company");
+            AFEventFrameCreator efCreator = new AFEventFrameCreator("PISRV01", "Magical Power Company");
             efCreator.CreateEventFrameTemplate();
             efCreator.CreateEventFrames();
             efCreator.CaptureValues();
