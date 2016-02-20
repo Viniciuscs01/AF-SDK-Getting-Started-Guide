@@ -7,8 +7,8 @@
     <ProjectGuid>{E649E492-A683-4EFE-864E-F5176C934F55}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ex2_Building_AF_Database</RootNamespace>
-    <AssemblyName>Ex2-Building-AF-Database</AssemblyName>
+    <RootNamespace>Ex4_Building_AF_Hierarchy</RootNamespace>
+    <AssemblyName>Ex4_Building</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -44,18 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AFHierarchyBuilder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\External\External.csproj">
-      <Project>{d092b122-47de-4107-b2a3-cc06f8426c62}</Project>
-      <Name>External</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

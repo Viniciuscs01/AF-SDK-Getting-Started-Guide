@@ -7,7 +7,7 @@
     <ProjectGuid>{ABB540D9-4B9F-4A83-9578-5E33EE7C5CF6}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ex1_Connection_Sln</RootNamespace>
+    <RootNamespace>Ex1_Connection_And_Hierarchy_Basics_Sln</RootNamespace>
     <AssemblyName>Ex1_Connection_Sln</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

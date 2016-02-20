@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex1-Connection-And-Hierarchy-Basics", "Ex1-Connection-And-Hierarchy-Basics\Ex1-Connection-And-Hierarchy-Basics.csproj", "{B8A590E4-2FC6-40ED-9AEF-07652B8EEC8F}"
 EndProject
@@ -18,8 +18,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex5-Working-With-Event-Frames", "Ex5-Working-With-EventFrames\Ex5-Working-With-Event-Frames.csproj", "{336C7E54-66C9-45C0-8BB8-FA9B3A3CB0FC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex5-Working-With-Event-Frames-Sln", "Ex5-Working-With-Event-Frames\Ex5-Working-With-Event-Frames-Sln.csproj", "{FF41DBFC-2BF3-4786-9A9A-6F13B4328CEF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "External", "External\External.csproj", "{D092B122-47DE-4107-B2A3-CC06F8426C62}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex3-Reading-And-Writing-Data", "Ex3-Reading-And-Writing-Data\Ex3-Reading-And-Writing-Data.csproj", "{EBA8F603-D688-4689-AA57-41736EBD894F}"
 EndProject
@@ -63,10 +61,6 @@ Global
 		{FF41DBFC-2BF3-4786-9A9A-6F13B4328CEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF41DBFC-2BF3-4786-9A9A-6F13B4328CEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF41DBFC-2BF3-4786-9A9A-6F13B4328CEF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D092B122-47DE-4107-B2A3-CC06F8426C62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D092B122-47DE-4107-B2A3-CC06F8426C62}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D092B122-47DE-4107-B2A3-CC06F8426C62}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D092B122-47DE-4107-B2A3-CC06F8426C62}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EBA8F603-D688-4689-AA57-41736EBD894F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EBA8F603-D688-4689-AA57-41736EBD894F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBA8F603-D688-4689-AA57-41736EBD894F}.Release|Any CPU.ActiveCfg = Release|Any CPU
