@@ -5,7 +5,7 @@ using OSIsoft.AF.Search;
 
 namespace Ex2_Searching_For_Assets
 {
-    class Program
+    class Program2
     {
         static void Main(string[] args)
         {
@@ -35,7 +35,18 @@ namespace Ex2_Searching_For_Assets
 
         static void FindMetersByName(AFDatabase database, string elementNameFilter)
         {
-            // Your code here
+            Console.WriteLine("Find Meters by Name: {0}", elementNameFilter);
+
+            AFElementSearch elementquery = new AFElementSearch(database, "ElementSearch", elementNameFilter);
+            foreach (AFElement element in elementquery.FindElements())
+            {
+                Console.WriteLine("Element: {0}, Template: {1}, Categories: {2}",
+                    element.Name,
+                    element.Template.Name,
+                    element.CategoriesString);
+            }
+
+            Console.WriteLine();
         }
 
         static void FindMetersByTemplate(AFDatabase database, string templateName)

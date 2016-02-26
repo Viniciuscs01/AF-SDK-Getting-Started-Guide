@@ -9,7 +9,7 @@ using OSIsoft.AF.Time;
 
 namespace Ex3_Reading_And_Writing_Data_Sln
 {
-    class Program
+    class Program3
     {
         static void Main(string[] args)
         {
@@ -27,15 +27,20 @@ namespace Ex3_Reading_And_Writing_Data_Sln
 
         static AFDatabase GetDatabase(string servername, string databasename)
         {
-            PISystems piafsystems = new PISystems();
-            PISystem system = piafsystems[servername];
-            if (system != null && system.Databases.Contains(databasename))
-            {
-                Console.WriteLine("Found '{0}' with '{1}' databases", system.Name, system.Databases.Count);
+            PISystem system = GetPISystem(null, servername);
+            if (!string.IsNullOrEmpty(databasename))
                 return system.Databases[databasename];
-            }
             else
-                return null;
+                return system.Databases.DefaultDatabase;
+        }
+
+        static PISystem GetPISystem(PISystems systems = null, string systemname = null)
+        {
+            systems = systems == null ? new PISystems() : systems;
+            if (!string.IsNullOrEmpty(systemname))
+                return systems[systemname];
+            else
+                return systems.DefaultPISystem;
         }
 
         static void PrintHistorical(AFDatabase database, string meterName, string startTime, string endTime)
@@ -117,7 +122,7 @@ namespace Ex3_Reading_And_Writing_Data_Sln
         {
             Console.WriteLine("Print Energy Usage at Time: {0}", timeStamp);
 
-            AFAttributeList attrList = GetAttributes(database);
+            AFAttributeList attrList = GetAttributes(database, "MeterBasic", "Energy Usage");
 
             AFTime time = new AFTime(timeStamp);
 
@@ -137,7 +142,7 @@ namespace Ex3_Reading_And_Writing_Data_Sln
         {
             Console.WriteLine(string.Format("Print Daily Energy Usage - Start: {0}, End: {1}", startTime, endTime));
 
-            AFAttributeList attrList = GetAttributes(database);
+            AFAttributeList attrList = GetAttributes(database, "MeterBasic", "Energy Usage");
 
             AFTime start = new AFTime(startTime);
             AFTime end = new AFTime(endTime);
@@ -220,7 +225,7 @@ namespace Ex3_Reading_And_Writing_Data_Sln
             Console.WriteLine();
         }
 
-        static AFAttributeList GetAttributes(AFDatabase database)
+        static AFAttributeList GetAttributes(AFDatabase database, string templateName, string attributeName)
         {
             int startIndex = 0;
             int pageSize = 1000;
@@ -235,9 +240,9 @@ namespace Ex3_Reading_And_Writing_Data_Sln
                      searchRoot: null,
                      nameFilter: null,
                      elemCategory: null,
-                     elemTemplate: database.ElementTemplates["MeterBasic"],
+                     elemTemplate: database.ElementTemplates[templateName],
                      elemType: AFElementType.Any,
-                     attrNameFilter: "Energy Usage",
+                     attrNameFilter: attributeName,
                      attrCategory: null,
                      attrType: TypeCode.Empty,
                      searchFullHierarchy: true,

@@ -9,7 +9,7 @@ using OSIsoft.AF.Time;
 
 namespace Ex3_Reading_And_Writing_Data
 {
-    class Program
+    class Program3
     {
         static void Main(string[] args)
         {
@@ -27,22 +27,44 @@ namespace Ex3_Reading_And_Writing_Data
 
         static AFDatabase GetDatabase(string servername, string databasename)
         {
-            PISystems piafsystems = new PISystems();
-            PISystem system = piafsystems[servername];
-            if (system != null && system.Databases.Contains(databasename))
-            {
-                Console.WriteLine("Found '{0}' with '{1}' databases", system.Name, system.Databases.Count);
+            PISystem system = GetPISystem(null, servername);
+            if (!string.IsNullOrEmpty(databasename))
                 return system.Databases[databasename];
-            }
             else
-                return null;
+                return system.Databases.DefaultDatabase;
+        }
+
+        static PISystem GetPISystem(PISystems systems = null, string systemname = null)
+        {
+            systems = systems == null ? new PISystems() : systems;
+            if (!string.IsNullOrEmpty(systemname))
+                return systems[systemname];
+            else
+                return systems.DefaultPISystem;
         }
 
         static void PrintHistorical(AFDatabase database, string meterName, string startTime, string endTime)
         {
+            Console.WriteLine(string.Format("Print Historical Values - Meter: {0}, Start: {1}, End: {2}", meterName, startTime, endTime));
+
             AFAttribute attr = AFAttribute.FindAttribute(@"\Meters\" + meterName + @"|Energy Usage", database);
 
-            // Your code here
+            AFTime start = new AFTime(startTime);
+            AFTime end = new AFTime(endTime);
+            AFTimeRange timeRange = new AFTimeRange(start, end);
+            AFValues vals = attr.Data.RecordedValues(
+                timeRange: timeRange,
+                boundaryType: AFBoundaryType.Inside,
+                desiredUOM: database.PISystem.UOMDatabase.UOMs["kilojoule"],
+                filterExpression: null,
+                includeFilteredValues: false);
+
+            foreach (AFValue val in vals)
+            {
+                Console.WriteLine("Timestamp (UTC): {0}, Value (kJ): {1}", val.Timestamp.UtcTime, val.Value);
+            }
+
+            Console.WriteLine();
         }
 
         static void PrintInterpolated(AFDatabase database, string meterName, string startTime, string endTime, TimeSpan timeSpan)

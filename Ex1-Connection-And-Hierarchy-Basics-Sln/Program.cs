@@ -9,7 +9,8 @@ namespace Ex1_Connection_And_Hierarchy_Basics_Sln
     {
         static void Main(string[] args)
         {
-            AFDatabase database = GetDatabase(Environment.MachineName, "Magical Power Company");
+            //AFDatabase database = GetDatabase(Environment.MachineName, "Magical Power Company");
+            AFDatabase database = GetDatabase("seine", "Magical Power Company");
             PrintRootElements(database);
             PrintElementTemplates(database);
             PrintAttributeTemplates(database, "MeterAdvanced");
@@ -23,15 +24,20 @@ namespace Ex1_Connection_And_Hierarchy_Basics_Sln
 
         static AFDatabase GetDatabase(string servername, string databasename)
         {
-            PISystems piafsystems = new PISystems();
-            PISystem system = piafsystems[servername];
-            if (system != null && system.Databases.Contains(databasename))
-            {
-                Console.WriteLine("Found '{0}' with '{1}' databases", system.Name, system.Databases.Count);
+            PISystem system = GetPISystem(null, servername);
+            if (!string.IsNullOrEmpty(databasename))
                 return system.Databases[databasename];
-            }
             else
-                return null;
+                return system.Databases.DefaultDatabase;
+        }
+
+        static PISystem GetPISystem(PISystems systems = null, string systemname = null)
+        {
+            systems = systems == null ? new PISystems() : systems;
+            if (!string.IsNullOrEmpty(systemname))
+                return systems[systemname];
+            else
+                return systems.DefaultPISystem;
         }
 
         static void PrintRootElements(AFDatabase database)

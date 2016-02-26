@@ -6,7 +6,7 @@ using OSIsoft.AF.Search;
 
 namespace Ex2_Searching_For_Assets_Sln
 {
-    class Program
+    class Program2
     {
         static void Main(string[] args)
         {
@@ -23,15 +23,20 @@ namespace Ex2_Searching_For_Assets_Sln
 
         static AFDatabase GetDatabase(string servername, string databasename)
         {
-            PISystems piafsystems = new PISystems();
-            PISystem system = piafsystems[servername];
-            if (system != null && system.Databases.Contains(databasename))
-            {
-                Console.WriteLine("Found '{0}' with '{1}' databases", system.Name, system.Databases.Count);
+            PISystem system = GetPISystem(null, servername);
+            if (!string.IsNullOrEmpty(databasename))
                 return system.Databases[databasename];
-            }
             else
-                return null;
+                return system.Databases.DefaultDatabase;
+        }
+
+        static PISystem GetPISystem(PISystems systems = null, string systemname = null)
+        {
+            systems = systems == null ? new PISystems() : systems;
+            if (!string.IsNullOrEmpty(systemname))
+                return systems[systemname];
+            else
+                return systems.DefaultPISystem;
         }
 
         static void FindMetersByName(AFDatabase database, string elementNameFilter)
@@ -71,12 +76,14 @@ namespace Ex2_Searching_For_Assets_Sln
             string attributeName = "Substation";
             AFElementSearch elementquery = new AFElementSearch(database, "AttributeValueEQSearch",
                 string.Format("template:\"{0}\" \"|{1}\":\"{2}\"", templateName, attributeName, substationLocation));
+
+            int countNames = 0;
             foreach (AFElement element in elementquery.FindElements())
             {
-                Console.Write(element.Name + ", ");
+                Console.Write("{0}{1}", countNames++ == 0 ? string.Empty : ", ", element.Name);
             }
 
-            Console.WriteLine();
+            Console.WriteLine("\n");
         }
 
         static void FindMetersAboveUsage(AFDatabase database, double val)
@@ -86,35 +93,15 @@ namespace Ex2_Searching_For_Assets_Sln
             string templateName = "MeterBasic";
             string attributeName = "Energy Usage";
             AFElementSearch elementquery = new AFElementSearch(database, "AttributeValueGTSearch",
-                string.Format("template:\"{0}\" \"|{1}\":>{2}", templateName, attributeName, (val/3600000.0)));
+                string.Format("template:\"{0}\" \"|{1}\":>{2}", templateName, attributeName, val));
+
+            int countNames = 0;
             foreach (AFElement element in elementquery.FindElements())
             {
-                Console.Write(element.Name + ", ");
+                Console.Write("{0}{1}", countNames++ == 0 ? string.Empty : ", ", element.Name);
             }
 
-            AFElementTemplate elemTemplate = database.ElementTemplates["MeterBasic"];
-            AFAttributeTemplate attrTemplate = elemTemplate.AttributeTemplates["Energy Usage"];
-
-            AFAttributeValueQuery[] query = new AFAttributeValueQuery[1];
-            query[0] = new AFAttributeValueQuery(attrTemplate, AFSearchOperator.GreaterThan, val);
-
-            AFNamedCollectionList<AFElement> foundElements = AFElement.FindElementsByAttribute(
-                                                    searchRoot: null,
-                                                    nameFilter: "*",
-                                                    valueQuery: query,
-                                                    searchFullHierarchy: true,
-                                                    sortField: AFSortField.Name,
-                                                    sortOrder: AFSortOrder.Ascending,
-                                                    maxCount: 100);
-
-            string[] meterNames = new string[foundElements.Count];
-            int i = 0;
-            foreach (AFElement element in foundElements)
-            {
-                meterNames[i++] = element.Name;
-            }
-            Console.WriteLine(string.Join(", ", meterNames));
-            Console.WriteLine();
+            Console.WriteLine("\n");
         }
 
         static void FindBuildingInfo(AFDatabase database, string templateName)

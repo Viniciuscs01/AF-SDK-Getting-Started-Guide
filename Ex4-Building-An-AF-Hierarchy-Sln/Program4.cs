@@ -6,7 +6,7 @@ using OSIsoft.AF.UnitsOfMeasure;
 
 namespace Ex4_Building_An_AF_Hierarchy_Sln
 {
-    class Program
+    class Program4
     {
         static void Main(string[] args)
         {
