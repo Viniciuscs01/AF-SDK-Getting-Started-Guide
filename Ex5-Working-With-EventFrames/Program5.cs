@@ -43,7 +43,22 @@ namespace Ex5_Working_With_EventFrames
         static AFElementTemplate CreateEventFrameTemplate(AFDatabase database)
         {
             AFElementTemplate eventframetemplate = null;
-            // Your code here
+            if (database.ElementTemplates.Contains("Daily Usage"))
+            {
+                return database.ElementTemplates["Daily Usage"];
+            }
+
+            eventframetemplate = database.ElementTemplates.Add("Daily Usage");
+            eventframetemplate.InstanceType = typeof(AFEventFrame);
+            eventframetemplate.NamingPattern = @"%TEMPLATE%-%ELEMENT%-%STARTTIME:yyyy-MM-dd%-EF*";
+
+            AFAttributeTemplate usage = eventframetemplate.AttributeTemplates.Add("Average Energy Usage");
+            usage.Type = typeof(double);
+            usage.DataReferencePlugIn = AFDataReference.GetPIPointDataReference();
+            usage.ConfigString = @".\Elements[.]|Energy Usage;TimeRangeMethod=Average";
+            usage.DefaultUOM = database.PISystem.UOMDatabase.UOMs["kilowatt hour"];
+
+            database.CheckIn();
             return eventframetemplate;
         }
 

@@ -27,6 +27,13 @@ namespace Ex4_Building_AF_Hierarchy
         {
             AFDatabase database = null;
             // Your code here
+            PISystems systems = new PISystems();
+            PISystem system = systems[servername];
+            if (system.Databases.Contains(databasename))
+                database = system.Databases[databasename];
+            else
+                database = system.Databases.Add(databasename);
+
             return database;
         }
 
