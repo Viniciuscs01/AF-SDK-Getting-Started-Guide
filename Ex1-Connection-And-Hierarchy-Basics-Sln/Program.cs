@@ -9,8 +9,7 @@ namespace Ex1_Connection_And_Hierarchy_Basics_Sln
     {
         static void Main(string[] args)
         {
-            //AFDatabase database = GetDatabase(Environment.MachineName, "Magical Power Company");
-            AFDatabase database = GetDatabase("seine", "Magical Power Company");
+            AFDatabase database = GetDatabase(Environment.MachineName, "Magical Power Company");
             PrintRootElements(database);
             PrintElementTemplates(database);
             PrintAttributeTemplates(database, "MeterAdvanced");

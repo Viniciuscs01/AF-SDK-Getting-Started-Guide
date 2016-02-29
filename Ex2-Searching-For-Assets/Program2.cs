@@ -37,7 +37,9 @@ namespace Ex2_Searching_For_Assets
         {
             Console.WriteLine("Find Meters by Name: {0}", elementNameFilter);
 
-            AFElementSearch elementquery = new AFElementSearch(database, "ElementSearch", elementNameFilter);
+            // Default search is as an element name string mask.
+            string querystring = string.Format("{0}", elementNameFilter);
+            AFElementSearch elementquery = new AFElementSearch(database, "ElementSearch", querystring);
             foreach (AFElement element in elementquery.FindElements())
             {
                 Console.WriteLine("Element: {0}, Template: {1}, Categories: {2}",

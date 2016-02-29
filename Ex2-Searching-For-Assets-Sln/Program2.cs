@@ -43,7 +43,9 @@ namespace Ex2_Searching_For_Assets_Sln
         {
             Console.WriteLine("Find Meters by Name: {0}", elementNameFilter);
 
-            AFElementSearch elementquery = new AFElementSearch(database, "ElementSearch", elementNameFilter);
+            // Default search is as an element name string mask.
+            string querystring = string.Format("{0}", elementNameFilter);
+            AFElementSearch elementquery = new AFElementSearch(database, "ElementSearch", querystring);
             foreach (AFElement element in elementquery.FindElements())
             {
                 Console.WriteLine("Element: {0}, Template: {1}, Categories: {2}",
@@ -60,10 +62,16 @@ namespace Ex2_Searching_For_Assets_Sln
             Console.WriteLine("Find Meters by Template: {0}", templateName);
 
             AFElementSearch elementquery = new AFElementSearch(database, "TemplateSearch", string.Format("template:\"{0}\"", templateName));
+            AFElementSearch templatefilter = new AFElementSearch(database, "DerivedTemplates", "templateName:\"MeterAdvanced\"");
+            int countderived = 0;
             foreach (AFElement element in elementquery.FindElements())
             {
                 Console.WriteLine("Element: {0}, Template: {1}", element.Name, element.Template.Name);
+                if (templatefilter.IsMatch(element))
+                    countderived++;
             }
+
+            Console.WriteLine("   Found {0} derived templates", countderived);
 
             Console.WriteLine();
         }
