@@ -4,6 +4,7 @@ using System.Linq;
 using OSIsoft.AF;
 using OSIsoft.AF.Asset;
 using OSIsoft.AF.EventFrame;
+using OSIsoft.AF.Search;
 using OSIsoft.AF.Time;
 
 
@@ -81,13 +82,14 @@ namespace Ex5_Working_With_EventFrames_Sln
 
                 IList<AFElement> meters = results.Select(elm => (AFElement)elm).ToList();
 
+                DateTime timereference = DateTime.Now.AddDays(-7);
+                //AFTime startTime = new AFTime(new DateTime(timereference.Year, timereference.Month, timereference.Day, 0, 0, 0, DateTimeKind.Local));
                 foreach (AFElement meter in meters)
                 {
-                    foreach (int day in Enumerable.Range(1, 5))
+                    foreach (int day in Enumerable.Range(1, 7))
                     {
-                        DateTime start = new DateTime(2016, 2, day, 0, 0, 0, DateTimeKind.Local);
-                        AFTime startTime = new AFTime(start);
-                        AFTime endTime = new AFTime(start.AddDays(1));
+                        AFTime startTime = new AFTime(timereference.AddDays(day - 1));
+                        AFTime endTime = new AFTime(startTime.LocalTime.AddDays(1));
                         AFEventFrame ef = new AFEventFrame(database, "*", eventFrameTemplate);
                         ef.SetStartTime(startTime);
                         ef.SetEndTime(endTime);
@@ -99,88 +101,44 @@ namespace Ex5_Working_With_EventFrames_Sln
 
                 startIndex += pageSize;
             } while (startIndex < totalCount);
+
+            database.CheckIn();
         }
 
         static public void CaptureValues(AFDatabase database, AFElementTemplate eventFrameTemplate)
         {
-            const int pageSize = 1000;
+            // Formulate search constraints on time and template
+            DateTime timereference = DateTime.Now.AddDays(-7);
+            AFTime startTime = new AFTime(new DateTime(timereference.Year, timereference.Month, timereference.Day, 0, 0, 0, DateTimeKind.Local));
+            string query = string.Format("template:\"{0}\"", eventFrameTemplate.Name);
+            AFEventFrameSearch eventframesrch = new AFEventFrameSearch(database, "EventFrame Captures", AFEventFrameSearchMode.ForwardFromStartTime, startTime, query);
+
             int startIndex = 0;
-
-            AFTime startTime = new AFTime(new DateTime(2016, 2, 1, 0, 0, 0, DateTimeKind.Local));
-            AFNamedCollectionList<AFEventFrame> efs;
-            do
+            foreach (AFEventFrame item in eventframesrch.FindEventFrames())
             {
-                efs = AFEventFrame.FindEventFrames(
-                    database: database,
-                    searchRoot: null,
-                    startTime: startTime,
-                    startIndex: startIndex,
-                    maxCount: pageSize,
-                    searchMode: AFEventFrameSearchMode.ForwardFromStartTime,
-                    nameFilter: "*",
-                    referencedElementNameFilter: "*",
-                    eventFrameCategory: null,
-                    eventFrameTemplate: eventFrameTemplate,
-                    referencedElementTemplate: null,
-                    searchFullHierarchy: true
-                    );
+                item.CaptureValues();
+                if ((startIndex++ % 512) == 0)
+                    database.CheckIn();
+            }
 
-                foreach (AFEventFrame ef in efs)
-                {
-                    if (!ef.AreValuesCaptured)
-                        ef.CaptureValues();
-                }
-
-                database.CheckIn();
-
-                startIndex += pageSize;
-            } while (efs != null && efs.Count > 0);
+            database.CheckIn();
         }
 
         static void PrintReport(AFDatabase database, AFElementTemplate eventFrameTemplate)
         {
-            const int pageSize = 1000;
-            int startIndex = 0;
+            DateTime timereference = DateTime.Now.AddDays(-7);
+            AFTime startTime = new AFTime(new DateTime(timereference.Year, timereference.Month, timereference.Day, 0, 0, 0, DateTimeKind.Local));
+            AFTime endTime = startTime.LocalTime.AddDays(+8);
+            string query = string.Format("template:\"{0}\" ElementName:\"{1}\"", eventFrameTemplate.Name, "Meter003");
+            AFEventFrameSearch eventframesrch = new AFEventFrameSearch(database, "EventFrame Captures", AFSearchMode.StartInclusive, startTime, endTime, query);
 
-            AFTime startTime = new AFTime(new DateTime(2016, 2, 1, 0, 0, 0, DateTimeKind.Local));
-            AFTime endTime = new AFTime(new DateTime(2016, 2, 6, 0, 0, 0, DateTimeKind.Local));
-
-            AFNamedCollectionList<AFEventFrame> efs;
-            do
+            foreach (AFEventFrame ef in eventframesrch.FindEventFrames())
             {
-                efs = AFEventFrame.FindEventFrames(
-                    database: database,
-                    searchRoot: null,
-                    searchMode: AFSearchMode.StartInclusive,
-                    startTime: startTime,
-                    endTime: endTime,
-                    startIndex: startIndex,
-                    maxCount: pageSize,
-                    nameFilter: "*",
-                    referencedElementNameFilter: "Meter003",
-                    eventFrameCategory: null,
-                    eventFrameTemplate: eventFrameTemplate,
-                    referencedElementTemplate: null,
-                    durationQuery: null,
-                    searchFullHierarchy: true,
-                    sortField: AFSortField.Name,
-                    sortOrder: AFSortOrder.Ascending
-                    );
-
-                // This loads all the attributes in one call to the AF Server.
-                // This prevents the loop below from making one call per iteration.
-                AFEventFrame.LoadEventFrames(efs);
-
-                foreach (AFEventFrame ef in efs)
-                {
-                    Console.WriteLine("{0}, {1}, {2}",
-                        ef.Name,
-                        ef.PrimaryReferencedElement.Name,
-                        ef.Attributes["Average Energy Usage"].GetValue().Value);
-                }
-
-                startIndex += pageSize;
-            } while (efs != null && efs.Count > 0);
+                Console.WriteLine("{0}, {1}, {2}",
+                    ef.Name,
+                    ef.PrimaryReferencedElement.Name,
+                    ef.Attributes["Average Energy Usage"].GetValue().Value);
+            }
         }
     }
 }

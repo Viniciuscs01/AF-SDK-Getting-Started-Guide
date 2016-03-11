@@ -43,12 +43,20 @@ namespace Ex4_Building_An_AF_Hierarchy_Sln
         {
             if (database == null) return;
 
-            database.ElementCategories.Add("Measures Energy");
-            database.ElementCategories.Add("Shows Status");
+            if (!database.ElementCategories.Contains("Measures Energy"))
+                database.ElementCategories.Add("Measures Energy");
 
-            database.AttributeCategories.Add("Building Info");
-            database.AttributeCategories.Add("Location");
-            database.AttributeCategories.Add("Time-Series Data");
+            if (!database.ElementCategories.Contains("Shows Status"))
+                database.ElementCategories.Add("Shows Status");
+
+            if (!database.AttributeCategories.Contains("Building Info"))
+                database.AttributeCategories.Add("Building Info");
+
+            if (!database.AttributeCategories.Contains("Location"))
+                database.AttributeCategories.Add("Location");
+
+            if (!database.AttributeCategories.Contains("Time-Series Data"))
+                database.AttributeCategories.Add("Time-Series Data");
 
             database.CheckIn();
         }
@@ -57,13 +65,19 @@ namespace Ex4_Building_An_AF_Hierarchy_Sln
         {
             if (database == null) return;
 
-            AFEnumerationSet bTypeEnum = database.EnumerationSets.Add("Building Type");
-            bTypeEnum.Add("Residential", 0);
-            bTypeEnum.Add("Business", 1);
+            if (!database.EnumerationSets.Contains("Building Type"))
+            {
+                AFEnumerationSet bTypeEnum = database.EnumerationSets.Add("Building Type");
+                bTypeEnum.Add("Residential", 0);
+                bTypeEnum.Add("Business", 1);
+            }
 
-            AFEnumerationSet mStatusEnum = database.EnumerationSets.Add("Meter Status");
-            mStatusEnum.Add("Good", 0);
-            mStatusEnum.Add("Bad", 1);
+            if (!database.EnumerationSets.Contains("Meter Status"))
+            {
+                AFEnumerationSet mStatusEnum = database.EnumerationSets.Add("Meter Status");
+                mStatusEnum.Add("Good", 0);
+                mStatusEnum.Add("Bad", 1);
+            }
 
             database.CheckIn();
         }
@@ -86,55 +100,64 @@ namespace Ex4_Building_An_AF_Hierarchy_Sln
 
             // Create MeterBasic Element Template
 
-            AFElementTemplate meterBasicTemplate = database.ElementTemplates.Add("MeterBasic");
-            meterBasicTemplate.Categories.Add(mEnergyE);
+            AFElementTemplate meterBasicTemplate;
+            if (!database.ElementTemplates.Contains("MeterBasic"))
+            {
+                meterBasicTemplate = database.ElementTemplates.Add("MeterBasic");
+                meterBasicTemplate.Categories.Add(mEnergyE);
 
-            AFAttributeTemplate substationAttrTemp = meterBasicTemplate.AttributeTemplates.Add("Substation");
-            substationAttrTemp.Type = typeof(string);
+                AFAttributeTemplate substationAttrTemp = meterBasicTemplate.AttributeTemplates.Add("Substation");
+                substationAttrTemp.Type = typeof(string);
 
-            AFAttributeTemplate usageLimitAttrTemp = meterBasicTemplate.AttributeTemplates.Add("Usage Limit");
-            usageLimitAttrTemp.Type = typeof(string);
-            usageLimitAttrTemp.DefaultUOM = uom;
+                AFAttributeTemplate usageLimitAttrTemp = meterBasicTemplate.AttributeTemplates.Add("Usage Limit");
+                usageLimitAttrTemp.Type = typeof(string);
+                usageLimitAttrTemp.DefaultUOM = uom;
 
-            AFAttributeTemplate buildingAttrTemp = meterBasicTemplate.AttributeTemplates.Add("Building");
-            buildingAttrTemp.Type = typeof(string);
-            buildingAttrTemp.Categories.Add(bInfoA);
+                AFAttributeTemplate buildingAttrTemp = meterBasicTemplate.AttributeTemplates.Add("Building");
+                buildingAttrTemp.Type = typeof(string);
+                buildingAttrTemp.Categories.Add(bInfoA);
 
-            AFAttributeTemplate bTypeAttrTemp = meterBasicTemplate.AttributeTemplates.Add("Building Type");
-            bTypeAttrTemp.TypeQualifier = bTypeNum;
-            bTypeAttrTemp.Categories.Add(bInfoA);
+                AFAttributeTemplate bTypeAttrTemp = meterBasicTemplate.AttributeTemplates.Add("Building Type");
+                bTypeAttrTemp.TypeQualifier = bTypeNum;
+                bTypeAttrTemp.Categories.Add(bInfoA);
 
-            AFAttributeTemplate districtAttrTemp = meterBasicTemplate.AttributeTemplates.Add("District");
-            districtAttrTemp.Type = typeof(string);
-            districtAttrTemp.Categories.Add(locationA);
+                AFAttributeTemplate districtAttrTemp = meterBasicTemplate.AttributeTemplates.Add("District");
+                districtAttrTemp.Type = typeof(string);
+                districtAttrTemp.Categories.Add(locationA);
 
-            AFAttributeTemplate energyUsageAttrTemp = meterBasicTemplate.AttributeTemplates.Add("Energy Usage");
-            energyUsageAttrTemp.Type = typeof(double);
-            energyUsageAttrTemp.Categories.Add(tsDataA);
-            energyUsageAttrTemp.DefaultUOM = uom;
-            energyUsageAttrTemp.DataReferencePlugIn = database.PISystem.DataReferencePlugIns["PI Point"];
-            energyUsageAttrTemp.ConfigString = @"\\%Server%\%Element%.%Attribute%;UOM=kWh";
+                AFAttributeTemplate energyUsageAttrTemp = meterBasicTemplate.AttributeTemplates.Add("Energy Usage");
+                energyUsageAttrTemp.Type = typeof(double);
+                energyUsageAttrTemp.Categories.Add(tsDataA);
+                energyUsageAttrTemp.DefaultUOM = uom;
+                energyUsageAttrTemp.DataReferencePlugIn = database.PISystem.DataReferencePlugIns["PI Point"];
+                energyUsageAttrTemp.ConfigString = @"\\%Server%\%Element%.%Attribute%;UOM=kWh";
+            }
+            else
+                meterBasicTemplate = database.ElementTemplates["MeterBasic"];
 
             // Create MeterAdvanced Element Template
 
-            AFElementTemplate meterAdvancedTemplate = database.ElementTemplates.Add("MeterAdvanced");
-            meterAdvancedTemplate.BaseTemplate = meterBasicTemplate;
+            if (!database.ElementTemplates.Contains("MeterAdvanced"))
+            {
+                AFElementTemplate meterAdvancedTemplate = database.ElementTemplates.Add("MeterAdvanced");
+                meterAdvancedTemplate.BaseTemplate = meterBasicTemplate;
 
-            AFAttributeTemplate statusAttrTemp = meterAdvancedTemplate.AttributeTemplates.Add("Status");
-            statusAttrTemp.TypeQualifier = mStatusEnum;
-            statusAttrTemp.Categories.Add(tsDataA);
-            statusAttrTemp.DataReferencePlugIn = database.PISystem.DataReferencePlugIns["PI Point"];
-            statusAttrTemp.ConfigString = @"\\%Server%\%Element%.%Attribute%";
+                AFAttributeTemplate statusAttrTemp = meterAdvancedTemplate.AttributeTemplates.Add("Status");
+                statusAttrTemp.TypeQualifier = mStatusEnum;
+                statusAttrTemp.Categories.Add(tsDataA);
+                statusAttrTemp.DataReferencePlugIn = database.PISystem.DataReferencePlugIns["PI Point"];
+                statusAttrTemp.ConfigString = @"\\%Server%\%Element%.%Attribute%";
 
-            // Create District Element Template
+                // Create District Element Template
 
-            AFElementTemplate districtTemplate = database.ElementTemplates.Add("District");
+                AFElementTemplate districtTemplate = database.ElementTemplates.Add("District");
 
-            AFAttributeTemplate districtEnergyUsageAttrTemp = districtTemplate.AttributeTemplates.Add("Energy Usage");
-            districtEnergyUsageAttrTemp.Type = typeof(double);
-            districtEnergyUsageAttrTemp.DefaultUOM = uom;
-            districtEnergyUsageAttrTemp.DataReferencePlugIn = database.PISystem.DataReferencePlugIns["PI Point"];
-            districtEnergyUsageAttrTemp.ConfigString = @"\\%Server%\%Element%.%Attribute%";
+                AFAttributeTemplate districtEnergyUsageAttrTemp = districtTemplate.AttributeTemplates.Add("Energy Usage");
+                districtEnergyUsageAttrTemp.Type = typeof(double);
+                districtEnergyUsageAttrTemp.DefaultUOM = uom;
+                districtEnergyUsageAttrTemp.DataReferencePlugIn = database.PISystem.DataReferencePlugIns["PI Point"];
+                districtEnergyUsageAttrTemp.ConfigString = @"\\%Server%\%Element%.%Attribute%";
+            }
 
             // Do a checkin at the end instead of one-by-one.
 
@@ -145,16 +168,23 @@ namespace Ex4_Building_An_AF_Hierarchy_Sln
         {
             if (database == null) return;
 
-            AFElement meters = database.Elements.Add("Meters");
+            AFElement meters;
+            if (!database.Elements.Contains("Meters"))
+                meters = database.Elements.Add("Meters");
+            else
+                meters = database.Elements["Meters"];
 
             AFElementTemplate basic = database.ElementTemplates["MeterBasic"];
             AFElementTemplate advanced = database.ElementTemplates["MeterAdvanced"];
 
             foreach (int i in Enumerable.Range(1, 12))
             {
-                AFElementTemplate eTemp = i <= 8 ? basic : advanced;
                 string name = "Meter" + i.ToString("D3");
-                AFElement e = meters.Elements.Add(name, eTemp);
+                if (!meters.Elements.Contains(name))
+                {
+                    AFElementTemplate eTemp = i <= 8 ? basic : advanced;
+                    AFElement e = meters.Elements.Add(name, eTemp);
+                }
             }
 
             database.CheckIn();
@@ -178,12 +208,15 @@ namespace Ex4_Building_An_AF_Hierarchy_Sln
         {
             if (database == null) return;
 
-            AFElement wizardingWorld = database.Elements.Add("Wizarding World");
-            AFElementTemplate districtTemplate = database.ElementTemplates["District"];
+            if (!database.Elements.Contains("Wizarding World"))
+            {
+                AFElement wizardingWorld = database.Elements.Add("Wizarding World");
+                AFElementTemplate districtTemplate = database.ElementTemplates["District"];
 
-            wizardingWorld.Elements.Add("Diagon Alley", districtTemplate);
-            wizardingWorld.Elements.Add("Hogsmeade", districtTemplate);
-            wizardingWorld.Elements.Add("Hogwarts", districtTemplate);
+                wizardingWorld.Elements.Add("Diagon Alley", districtTemplate);
+                wizardingWorld.Elements.Add("Hogsmeade", districtTemplate);
+                wizardingWorld.Elements.Add("Hogwarts", districtTemplate);
+            }
 
             database.CheckIn();
         }
