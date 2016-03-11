@@ -10,7 +10,7 @@ namespace Ex4_Building_An_AF_Hierarchy_Sln
     {
         static void Main(string[] args)
         {
-            AFDatabase database = GetDatabase("bshange6430s", "Magical Power Company");
+            AFDatabase database = GetDatabase("PISRV01", "Magical Power Company");
             CreateElementTemplate(database);
             CreateFeedersRootElement(database);
             CreateFeederElements(database);
