@@ -2,7 +2,7 @@
 using OSIsoft.AF;
 using OSIsoft.AF.Asset;
 
-namespace Ex4_Building_AF_Hierarchy
+namespace Ex4_Building_An_AF_Hierarchy
 {
     class Program4
     {
