@@ -13,7 +13,6 @@ namespace Ex1_Connection_And_Hierarchy_Basics_Sln
             PISystem piSystem = piSystems["PISRV01"];
             AFDatabase database = piSystem.Databases["Magical Power Company"];
 
-            //AFDatabase database = GetDatabase("PISRV01", "Magical Power Company");
             PrintRootElements(database);
             PrintElementTemplates(database);
             PrintAttributeTemplates(database, "MeterAdvanced");
@@ -23,24 +22,6 @@ namespace Ex1_Connection_And_Hierarchy_Basics_Sln
 
             Console.WriteLine("Press any key to exit");
             Console.ReadKey();
-        }
-
-        static AFDatabase GetDatabase(string servername, string databasename)
-        {
-            PISystem system = GetPISystem(null, servername);
-            if (!string.IsNullOrEmpty(databasename))
-                return system.Databases[databasename];
-            else
-                return system.Databases.DefaultDatabase;
-        }
-
-        static PISystem GetPISystem(PISystems systems = null, string systemname = null)
-        {
-            systems = systems == null ? new PISystems() : systems;
-            if (!string.IsNullOrEmpty(systemname))
-                return systems[systemname];
-            else
-                return systems.DefaultPISystem;
         }
 
         static void PrintRootElements(AFDatabase database)
@@ -60,7 +41,6 @@ namespace Ex1_Connection_And_Hierarchy_Basics_Sln
             AFNamedCollectionList<AFElementTemplate> elemTemplates = database.ElementTemplates.FilterBy(typeof(AFElement));
             foreach (AFElementTemplate elemTemp in elemTemplates)
             {
-                // Note: An alternative and faster approach is to use eTemp.CategoriesString
                 string[] categories = new string[elemTemp.Categories.Count];
                 int i = 0;
                 foreach (AFCategory category in elemTemp.Categories)
@@ -68,6 +48,7 @@ namespace Ex1_Connection_And_Hierarchy_Basics_Sln
                     categories[i++] = category.Name;
                 }
 
+                // Note: An alternative approach is to use CategoriesString
                 string categoriesString = string.Join(",", categories);
                 Console.WriteLine("Name: {0}, Categories: {1}", elemTemp.Name, elemTemp.CategoriesString);
             }

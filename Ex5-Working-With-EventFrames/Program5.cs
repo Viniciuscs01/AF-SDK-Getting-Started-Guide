@@ -4,6 +4,7 @@ using System.Linq;
 using OSIsoft.AF;
 using OSIsoft.AF.Asset;
 using OSIsoft.AF.EventFrame;
+using OSIsoft.AF.Search;
 using OSIsoft.AF.Time;
 
 namespace Ex5_Working_With_EventFrames

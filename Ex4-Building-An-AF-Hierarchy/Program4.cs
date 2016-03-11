@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Linq;
 using OSIsoft.AF;
 using OSIsoft.AF.Asset;
-using OSIsoft.AF.UnitsOfMeasure;
 
 namespace Ex4_Building_AF_Hierarchy
 {

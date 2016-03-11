@@ -7,7 +7,6 @@ using OSIsoft.AF.EventFrame;
 using OSIsoft.AF.Search;
 using OSIsoft.AF.Time;
 
-
 namespace Ex5_Working_With_EventFrames_Sln
 {
     class Program5
@@ -111,10 +110,10 @@ namespace Ex5_Working_With_EventFrames_Sln
             DateTime timereference = DateTime.Now.AddDays(-7);
             AFTime startTime = new AFTime(new DateTime(timereference.Year, timereference.Month, timereference.Day, 0, 0, 0, DateTimeKind.Local));
             string query = string.Format("template:\"{0}\"", eventFrameTemplate.Name);
-            AFEventFrameSearch eventframesrch = new AFEventFrameSearch(database, "EventFrame Captures", AFEventFrameSearchMode.ForwardFromStartTime, startTime, query);
+            AFEventFrameSearch eventFrameSearch = new AFEventFrameSearch(database, "EventFrame Captures", AFEventFrameSearchMode.ForwardFromStartTime, startTime, query);
 
             int startIndex = 0;
-            foreach (AFEventFrame item in eventframesrch.FindEventFrames())
+            foreach (AFEventFrame item in eventFrameSearch.FindEventFrames())
             {
                 item.CaptureValues();
                 if ((startIndex++ % 512) == 0)
@@ -130,9 +129,9 @@ namespace Ex5_Working_With_EventFrames_Sln
             AFTime startTime = new AFTime(new DateTime(timereference.Year, timereference.Month, timereference.Day, 0, 0, 0, DateTimeKind.Local));
             AFTime endTime = startTime.LocalTime.AddDays(+8);
             string query = string.Format("template:\"{0}\" ElementName:\"{1}\"", eventFrameTemplate.Name, "Meter003");
-            AFEventFrameSearch eventframesrch = new AFEventFrameSearch(database, "EventFrame Captures", AFSearchMode.StartInclusive, startTime, endTime, query);
+            AFEventFrameSearch eventFrameSearch = new AFEventFrameSearch(database, "EventFrame Captures", AFSearchMode.StartInclusive, startTime, endTime, query);
 
-            foreach (AFEventFrame ef in eventframesrch.FindEventFrames())
+            foreach (AFEventFrame ef in eventFrameSearch.FindEventFrames())
             {
                 Console.WriteLine("{0}, {1}, {2}",
                     ef.Name,
