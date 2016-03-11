@@ -13,7 +13,7 @@ namespace Ex3_Reading_And_Writing_Data_Sln
     {
         static void Main(string[] args)
         {
-            AFDatabase database = GetDatabase(Environment.MachineName, "Magical Power Company");
+            AFDatabase database = GetDatabase("PISRV01", "Magical Power Company");
             PrintHistorical(database, "Meter001", "*-30s", "*");
             PrintInterpolated(database, "Meter001", "*-30s", "*", TimeSpan.FromSeconds(10));
             PrintHourlyAverage(database, "Meter001", "y", "t");

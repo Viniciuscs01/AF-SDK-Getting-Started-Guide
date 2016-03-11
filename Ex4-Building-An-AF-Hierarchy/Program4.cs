@@ -10,72 +10,70 @@ namespace Ex4_Building_AF_Hierarchy
     {
         static void Main(string[] args)
         {
-            AFDatabase database = CreateDatabase(Environment.MachineName, "Mythical Power Company");
-            CreateCategories(database);
-            CreateEnumerationSets(database);
-            CreateTemplates(database);
-            CreateElements(database);
-            SetAttributeValues(database);
-            CreateDistrictElements(database);
-            CreateWeakReferences(database);
+            AFDatabase database = GetDatabase("bshange6430s", "Magical Power Company");
+            CreateElementTemplate(database);
+            CreateFeedersRootElement(database);
+            CreateFeederElements(database);
+            CreateWeakReference(database);
+
+            // This bonus exercise  creates a replica database
+            //Bonus.Run();
 
             Console.WriteLine("Press any key to exit");
             Console.ReadKey();
         }
 
-        static AFDatabase CreateDatabase(string servername, string databasename)
+        static AFDatabase GetDatabase(string servername, string databasename)
         {
-            AFDatabase database = null;
-            // Your code here
-            PISystems systems = new PISystems();
-            PISystem system = systems[servername];
-            if (system.Databases.Contains(databasename))
-                database = system.Databases[databasename];
+            PISystem system = GetPISystem(null, servername);
+            if (!string.IsNullOrEmpty(databasename))
+                return system.Databases[databasename];
             else
-                database = system.Databases.Add(databasename);
-
-            return database;
+                return system.Databases.DefaultDatabase;
         }
 
-        static void CreateCategories(AFDatabase database)
+        static PISystem GetPISystem(PISystems systems = null, string systemname = null)
         {
-            if (database == null) return;
+            systems = systems == null ? new PISystems() : systems;
+            if (!string.IsNullOrEmpty(systemname))
+                return systems[systemname];
+            else
+                return systems.DefaultPISystem;
+        }
+
+        static void CreateElementTemplate(AFDatabase database)
+        {
+            string templateName = "FeederTemplate";
+            AFElementTemplate feederTemplate;
+            if (database.ElementTemplates.Contains(templateName))
+                return;
+            else
+                feederTemplate = database.ElementTemplates.Add(templateName);
+
+            AFAttributeTemplate district = feederTemplate.AttributeTemplates.Add("District");
+            district.Type = typeof(string);
+
+            AFAttributeTemplate power = feederTemplate.AttributeTemplates.Add("Power");
+            power.Type = typeof(Single);
+
+            power.DefaultUOM = database.PISystem.UOMDatabase.UOMs["watt"];
+            power.DataReferencePlugIn = database.PISystem.DataReferencePlugIns["PI Point"];
+
+            database.CheckIn();
+        }
+
+        static void CreateFeedersRootElement(AFDatabase database)
+        {
             // Your code here
         }
 
-        static void CreateEnumerationSets(AFDatabase database)
+        static void CreateFeederElements(AFDatabase database)
         {
-            if (database == null) return;
             // Your code here
         }
 
-        static void CreateTemplates(AFDatabase database)
+        static void CreateWeakReference(AFDatabase database)
         {
-            if (database == null) return;
-            // Your code here
-        }
-
-        static void CreateElements(AFDatabase database)
-        {
-            if (database == null) return;
-            // Your code here
-        }
-
-        static void SetAttributeValues(AFDatabase database)
-        {
-            if (database == null) return;
-            // Your code here
-        }
-
-        static void CreateDistrictElements(AFDatabase database)
-        {
-            if (database == null) return;
-            // Your code here
-        }
-
-        static void CreateWeakReferences(AFDatabase database)
-        {
-            if (database == null) return;
             // Your code here
         }
     }

@@ -5,11 +5,15 @@ using OSIsoft.AF.UnitsOfMeasure;
 
 namespace Ex1_Connection_And_Hierarchy_Basics
 {
-    class Program
+    class Program1
     {
         static void Main(string[] args)
         {
-            AFDatabase database = GetDatabase(Environment.MachineName, "Magical Power Company");
+            PISystems piSystems = new PISystems();
+            PISystem piSystem = piSystems["PISRV01"];
+            AFDatabase database = piSystem.Databases["Magical Power Company"];
+
+            //AFDatabase database = GetDatabase("PISRV01", "Magical Power Company");
             PrintRootElements(database);
             PrintElementTemplates(database);
             PrintAttributeTemplates(database, "MeterAdvanced");

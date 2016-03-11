@@ -9,7 +9,7 @@ namespace Ex2_Searching_For_Assets
     {
         static void Main(string[] args)
         {
-            AFDatabase database = GetDatabase(Environment.MachineName, "Magical Power Company");
+            AFDatabase database = GetDatabase("PISRV01", "Magical Power Company");
             FindMetersByName(database, "Meter00*");
             FindMetersByTemplate(database, "MeterBasic");
             FindMetersBySubstation(database, "Edinburgh");
