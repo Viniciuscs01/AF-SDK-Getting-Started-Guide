@@ -9,9 +9,7 @@ namespace Ex1_Connection_And_Hierarchy_Basics
     {
         static void Main(string[] args)
         {
-            PISystems piSystems = new PISystems();
-            PISystem piSystem = piSystems["PISRV01"];
-            AFDatabase database = piSystem.Databases["Magical Power Company"];
+            AFDatabase database = GetDatabase("PISRV01", "Magical Power Company");
 
             PrintRootElements(database);
             PrintElementTemplates(database);
@@ -22,6 +20,14 @@ namespace Ex1_Connection_And_Hierarchy_Basics
 
             Console.WriteLine("Press any key to exit");
             Console.ReadKey();
+        }
+
+        static AFDatabase GetDatabase(string server, string database)
+        {
+            PISystems piSystems = new PISystems();
+            PISystem piSystem = piSystems[server];
+            AFDatabase afDatabase = piSystem.Databases[database];
+            return afDatabase;
         }
 
         static void PrintRootElements(AFDatabase database)
