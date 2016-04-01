@@ -1,0 +1,750 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AF xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="OSIsoft.AF.xsd" SchemaVersion="2.0" SoftwareVersion="2.8.0.7346" ExportMode="NoUniqueID" PISystem="localhost" Database="Magical Power Company" Description="" Created="2016-02-12T17:55:52.6603449Z" id="96e849d5-c0d6-4045-8a96-def8f3d3f2bb" ParentKey="90c0f339-453e-4375-99bc-c33018b43b7c" ExportedObject="Magical Power Company" ExportedType="AFDatabase" Identity="Database" PIPersist="154 {9895150E-085D-4fcb-A16D-5EF5D2527196} 2\{90c0f339-453e-4375-99bc-c33018b43b7c}\{96e849d5-c0d6-4045-8a96-def8f3d3f2bb}*localhost\Magical Power Company">
+  <AFDatabase>
+    <Name>Magical Power Company</Name>
+    <AFAttributeCategory>
+      <Name>Building Info</Name>
+    </AFAttributeCategory>
+    <AFAttributeCategory>
+      <Name>Location</Name>
+    </AFAttributeCategory>
+    <AFAttributeCategory>
+      <Name>Time-Series Data</Name>
+    </AFAttributeCategory>
+    <AFElementCategory>
+      <Name>Measures Energy</Name>
+    </AFElementCategory>
+    <AFElementCategory>
+      <Name>Shows Status</Name>
+    </AFElementCategory>
+    <AFEnumerationSet>
+      <Name>Building Type</Name>
+      <AFEnumerationValue>
+        <Name>Residential</Name>
+        <Value>0</Value>
+      </AFEnumerationValue>
+      <AFEnumerationValue>
+        <Name>Business</Name>
+        <Value>1</Value>
+      </AFEnumerationValue>
+    </AFEnumerationSet>
+    <AFEnumerationSet>
+      <Name>Meter Status</Name>
+      <AFEnumerationValue>
+        <Name>Good</Name>
+        <Value>0</Value>
+      </AFEnumerationValue>
+      <AFEnumerationValue>
+        <Name>Bad</Name>
+        <Value>1</Value>
+      </AFEnumerationValue>
+    </AFEnumerationSet>
+    <AFElementTemplate>
+      <Name>District</Name>
+      <Type>None</Type>
+      <InstanceType>Element</InstanceType>
+      <AllowElementToExtend>false</AllowElementToExtend>
+      <AFAttributeTemplate>
+        <Name>Energy Usage</Name>
+        <DefaultUOM>kWh</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>PI Point</DataReference>
+        <ConfigString>\\%Server%\%Element%.%Attribute%;pointtype=Float64</ConfigString>
+      </AFAttributeTemplate>
+      <AFAnalysisTemplate>
+        <Name>Energy Usage Rollup</Name>
+        <Target>District</Target>
+        <AFAnalysisRule>
+          <AFPlugIn>Rollup</AFPlugIn>
+          <VariableMapping>SearchCriteria||Elements[@Name=*]|Attributes[@Name=Energy Usage];Sum||Energy Usage;[GUID]||{081d2b2b-6d17-4fb4-a797-0b35c9c7eb36};[GUID]||[UNSET];</VariableMapping>
+        </AFAnalysisRule>
+        <AFTimeRule>
+          <AFPlugIn>Natural</AFPlugIn>
+        </AFTimeRule>
+      </AFAnalysisTemplate>
+    </AFElementTemplate>
+    <AFElementTemplate>
+      <Name>MeterBasic</Name>
+      <Type>None</Type>
+      <InstanceType>Element</InstanceType>
+      <AllowElementToExtend>false</AllowElementToExtend>
+      <AFElementCategoryRef>Measures Energy</AFElementCategoryRef>
+      <AFAttributeTemplate>
+        <Name>Building</Name>
+        <Type>String</Type>
+        <Value type="String"></Value>
+        <AFAttributeCategoryRef>Building Info</AFAttributeCategoryRef>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>Building Type</Name>
+        <Type>AFEnumerationValue</Type>
+        <TypeQualifier type="AFObject">EnumerationSets[Building Type]</TypeQualifier>
+        <AFAttributeCategoryRef>Building Info</AFAttributeCategoryRef>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>District</Name>
+        <Type>String</Type>
+        <Value type="String"></Value>
+        <AFAttributeCategoryRef>Location</AFAttributeCategoryRef>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>Energy Usage</Name>
+        <DefaultUOM>kWh</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+        <DataReference>PI Point</DataReference>
+        <ConfigString>\\%Server%\%Element%.%Attribute%;UOM=kWh;pointtype=Float64</ConfigString>
+        <AFAttributeCategoryRef>Time-Series Data</AFAttributeCategoryRef>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>Substation</Name>
+        <Type>String</Type>
+        <Value type="String"></Value>
+      </AFAttributeTemplate>
+      <AFAttributeTemplate>
+        <Name>Usage Limit</Name>
+        <DefaultUOM>kWh</DefaultUOM>
+        <Type>Double</Type>
+        <Value type="Double">0</Value>
+      </AFAttributeTemplate>
+      <AFAnalysisTemplate>
+        <Name>Simulated Energy Usage</Name>
+        <Target>MeterBasic</Target>
+        <AFAnalysisRule>
+          <AFPlugIn>PerformanceEquation</AFPlugIn>
+          <ConfigString>BrownianOscillator := Max(0, PrevVal('{0de3203f-80ee-4b3e-880e-99e2f451d50e};Energy Usage','*') + Normalrnd(0,30) - 0.1*(PrevVal('{0de3203f-80ee-4b3e-880e-99e2f451d50e};Energy Usage','*')-300));</ConfigString>
+          <VariableMapping>Brownian Oscillator||Energy Usage;[GUID]||{0de3203f-80ee-4b3e-880e-99e2f451d50e};BrownianOscillator||Energy Usage;[GUID]||{0de3203f-80ee-4b3e-880e-99e2f451d50e};[GUID]||[UNSET];</VariableMapping>
+        </AFAnalysisRule>
+        <AFTimeRule>
+          <AFPlugIn>Periodic</AFPlugIn>
+          <ConfigString>Frequency=5</ConfigString>
+        </AFTimeRule>
+      </AFAnalysisTemplate>
+    </AFElementTemplate>
+    <AFElementTemplate>
+      <Name>MeterAdvanced</Name>
+      <BaseTemplate>MeterBasic</BaseTemplate>
+      <Type>None</Type>
+      <InstanceType>Element</InstanceType>
+      <AllowElementToExtend>false</AllowElementToExtend>
+      <AFElementCategoryRef>Shows Status</AFElementCategoryRef>
+      <AFAttributeTemplate>
+        <Name>Status</Name>
+        <Type>AFEnumerationValue</Type>
+        <TypeQualifier type="AFObject">EnumerationSets[Meter Status]</TypeQualifier>
+        <Value type="AFEnumerationValue">EnumerationSets[Meter Status]\Good</Value>
+        <DataReference>PI Point</DataReference>
+        <ConfigString>\\%Server%\%Element%.%Attribute%;pointtype=digital;digitalset=MeterStatus</ConfigString>
+        <AFAttributeCategoryRef>Time-Series Data</AFAttributeCategoryRef>
+      </AFAttributeTemplate>
+      <AFAnalysisTemplate>
+        <Name>Simulated Status</Name>
+        <Target>MeterAdvanced</Target>
+        <AFAnalysisRule>
+          <AFPlugIn>PerformanceEquation</AFPlugIn>
+          <ConfigString>if '{0de3203f-80ee-4b3e-880e-99e2f451d50e};Energy Usage' &lt; '{877e85e5-23e3-44b0-b97d-5a6930d20d36};Usage Limit' then "Good" else "Bad"</ConfigString>
+          <VariableMapping>Output||Status;[GUID]||{fe525202-aa13-4b3e-aba7-f366a1a49429};[GUID]||[UNSET];</VariableMapping>
+        </AFAnalysisRule>
+        <AFTimeRule>
+          <AFPlugIn>Natural</AFPlugIn>
+        </AFTimeRule>
+      </AFAnalysisTemplate>
+    </AFElementTemplate>
+    <AFElement>
+      <Name>Meters</Name>
+      <AFElement ReferenceType="Parent-Child">
+        <Name>Meter001</Name>
+        <Template>MeterBasic</Template>
+        <AFAttribute>
+          <Name>Building</Name>
+          <Value type="String">Gryffindor</Value>
+          <AFAttributeCategoryRef>Building Info</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Building Type</Name>
+          <Value type="AFEnumerationValue">EnumerationSets[Building Type]\Residential</Value>
+          <AFAttributeCategoryRef>Building Info</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>District</Name>
+          <Value type="String">Hogwarts</Value>
+          <AFAttributeCategoryRef>Location</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Energy Usage</Name>
+          <AFAttributeCategoryRef>Time-Series Data</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Substation</Name>
+          <Value type="String">Edinburgh</Value>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Usage Limit</Name>
+          <UOM>kWh</UOM>
+          <Value type="Double">350</Value>
+        </AFAttribute>
+        <AFAnalysis>
+          <Name>Simulated Energy Usage</Name>
+          <Template>Simulated Energy Usage</Template>
+          <Status>Enabled</Status>
+          <Target>
+            <AFElementRef>Meters\Meter001</AFElementRef>
+          </Target>
+        </AFAnalysis>
+      </AFElement>
+      <AFElement ReferenceType="Parent-Child">
+        <Name>Meter002</Name>
+        <Template>MeterBasic</Template>
+        <AFAttribute>
+          <Name>Building</Name>
+          <Value type="String">Hufflepuff</Value>
+          <AFAttributeCategoryRef>Building Info</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Building Type</Name>
+          <Value type="AFEnumerationValue">EnumerationSets[Building Type]\Residential</Value>
+          <AFAttributeCategoryRef>Building Info</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>District</Name>
+          <Value type="String">Hogwarts</Value>
+          <AFAttributeCategoryRef>Location</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Energy Usage</Name>
+          <AFAttributeCategoryRef>Time-Series Data</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Substation</Name>
+          <Value type="String">London</Value>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Usage Limit</Name>
+          <UOM>kWh</UOM>
+          <Value type="Double">350</Value>
+        </AFAttribute>
+        <AFAnalysis>
+          <Name>Simulated Energy Usage</Name>
+          <Template>Simulated Energy Usage</Template>
+          <Status>Enabled</Status>
+          <Target>
+            <AFElementRef>Meters\Meter002</AFElementRef>
+          </Target>
+        </AFAnalysis>
+      </AFElement>
+      <AFElement ReferenceType="Parent-Child">
+        <Name>Meter003</Name>
+        <Template>MeterBasic</Template>
+        <AFAttribute>
+          <Name>Building</Name>
+          <Value type="String">Ravenclaw</Value>
+          <AFAttributeCategoryRef>Building Info</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Building Type</Name>
+          <Value type="AFEnumerationValue">EnumerationSets[Building Type]\Residential</Value>
+          <AFAttributeCategoryRef>Building Info</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>District</Name>
+          <Value type="String">Hogwarts</Value>
+          <AFAttributeCategoryRef>Location</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Energy Usage</Name>
+          <AFAttributeCategoryRef>Time-Series Data</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Substation</Name>
+          <Value type="String">Paris</Value>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Usage Limit</Name>
+          <UOM>kWh</UOM>
+          <Value type="Double">350</Value>
+        </AFAttribute>
+        <AFAnalysis>
+          <Name>Simulated Energy Usage</Name>
+          <Template>Simulated Energy Usage</Template>
+          <Status>Enabled</Status>
+          <Target>
+            <AFElementRef>Meters\Meter003</AFElementRef>
+          </Target>
+        </AFAnalysis>
+      </AFElement>
+      <AFElement ReferenceType="Parent-Child">
+        <Name>Meter004</Name>
+        <Template>MeterBasic</Template>
+        <AFAttribute>
+          <Name>Building</Name>
+          <Value type="String">Slytherin</Value>
+          <AFAttributeCategoryRef>Building Info</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Building Type</Name>
+          <Value type="AFEnumerationValue">EnumerationSets[Building Type]\Residential</Value>
+          <AFAttributeCategoryRef>Building Info</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>District</Name>
+          <Value type="String">Hogwarts</Value>
+          <AFAttributeCategoryRef>Location</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Energy Usage</Name>
+          <AFAttributeCategoryRef>Time-Series Data</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Substation</Name>
+          <Value type="String">Prague</Value>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Usage Limit</Name>
+          <UOM>kWh</UOM>
+          <Value type="Double">350</Value>
+        </AFAttribute>
+        <AFAnalysis>
+          <Name>Simulated Energy Usage</Name>
+          <Template>Simulated Energy Usage</Template>
+          <Status>Enabled</Status>
+          <Target>
+            <AFElementRef>Meters\Meter004</AFElementRef>
+          </Target>
+        </AFAnalysis>
+      </AFElement>
+      <AFElement ReferenceType="Parent-Child">
+        <Name>Meter005</Name>
+        <Template>MeterBasic</Template>
+        <AFAttribute>
+          <Name>Building</Name>
+          <Value type="String">Flourish and Blots</Value>
+          <AFAttributeCategoryRef>Building Info</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Building Type</Name>
+          <Value type="AFEnumerationValue">EnumerationSets[Building Type]\Business</Value>
+          <AFAttributeCategoryRef>Building Info</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>District</Name>
+          <Value type="String">Diagon Alley</Value>
+          <AFAttributeCategoryRef>Location</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Energy Usage</Name>
+          <AFAttributeCategoryRef>Time-Series Data</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Substation</Name>
+          <Value type="String">Edinburgh</Value>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Usage Limit</Name>
+          <UOM>kWh</UOM>
+          <Value type="Double">360</Value>
+        </AFAttribute>
+        <AFAnalysis>
+          <Name>Simulated Energy Usage</Name>
+          <Template>Simulated Energy Usage</Template>
+          <Status>Enabled</Status>
+          <Target>
+            <AFElementRef>Meters\Meter005</AFElementRef>
+          </Target>
+        </AFAnalysis>
+      </AFElement>
+      <AFElement ReferenceType="Parent-Child">
+        <Name>Meter006</Name>
+        <Template>MeterBasic</Template>
+        <AFAttribute>
+          <Name>Building</Name>
+          <Value type="String">Ollivanders</Value>
+          <AFAttributeCategoryRef>Building Info</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Building Type</Name>
+          <Value type="AFEnumerationValue">EnumerationSets[Building Type]\Business</Value>
+          <AFAttributeCategoryRef>Building Info</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>District</Name>
+          <Value type="String">Diagon Alley</Value>
+          <AFAttributeCategoryRef>Location</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Energy Usage</Name>
+          <AFAttributeCategoryRef>Time-Series Data</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Substation</Name>
+          <Value type="String">London</Value>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Usage Limit</Name>
+          <UOM>kWh</UOM>
+          <Value type="Double">360</Value>
+        </AFAttribute>
+        <AFAnalysis>
+          <Name>Simulated Energy Usage</Name>
+          <Template>Simulated Energy Usage</Template>
+          <Status>Enabled</Status>
+          <Target>
+            <AFElementRef>Meters\Meter006</AFElementRef>
+          </Target>
+        </AFAnalysis>
+      </AFElement>
+      <AFElement ReferenceType="Parent-Child">
+        <Name>Meter007</Name>
+        <Template>MeterBasic</Template>
+        <AFAttribute>
+          <Name>Building</Name>
+          <Value type="String">The Leaky Cauldron</Value>
+          <AFAttributeCategoryRef>Building Info</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Building Type</Name>
+          <Value type="AFEnumerationValue">EnumerationSets[Building Type]\Business</Value>
+          <AFAttributeCategoryRef>Building Info</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>District</Name>
+          <Value type="String">Diagon Alley</Value>
+          <AFAttributeCategoryRef>Location</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Energy Usage</Name>
+          <AFAttributeCategoryRef>Time-Series Data</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Substation</Name>
+          <Value type="String">Paris</Value>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Usage Limit</Name>
+          <UOM>kWh</UOM>
+          <Value type="Double">360</Value>
+        </AFAttribute>
+        <AFAnalysis>
+          <Name>Simulated Energy Usage</Name>
+          <Template>Simulated Energy Usage</Template>
+          <Status>Enabled</Status>
+          <Target>
+            <AFElementRef>Meters\Meter007</AFElementRef>
+          </Target>
+        </AFAnalysis>
+      </AFElement>
+      <AFElement ReferenceType="Parent-Child">
+        <Name>Meter008</Name>
+        <Template>MeterBasic</Template>
+        <AFAttribute>
+          <Name>Building</Name>
+          <Value type="String">Borgin and Burkes</Value>
+          <AFAttributeCategoryRef>Building Info</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Building Type</Name>
+          <Value type="AFEnumerationValue">EnumerationSets[Building Type]\Business</Value>
+          <AFAttributeCategoryRef>Building Info</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>District</Name>
+          <Value type="String">Diagon Alley</Value>
+          <AFAttributeCategoryRef>Location</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Energy Usage</Name>
+          <AFAttributeCategoryRef>Time-Series Data</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Substation</Name>
+          <Value type="String">Prague</Value>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Usage Limit</Name>
+          <UOM>kWh</UOM>
+          <Value type="Double">360</Value>
+        </AFAttribute>
+        <AFAnalysis>
+          <Name>Simulated Energy Usage</Name>
+          <Template>Simulated Energy Usage</Template>
+          <Status>Enabled</Status>
+          <Target>
+            <AFElementRef>Meters\Meter008</AFElementRef>
+          </Target>
+        </AFAnalysis>
+      </AFElement>
+      <AFElement ReferenceType="Parent-Child">
+        <Name>Meter009</Name>
+        <Template>MeterAdvanced</Template>
+        <AFElementCategoryRef>Measures Energy</AFElementCategoryRef>
+        <AFAttribute>
+          <Name>Building</Name>
+          <Value type="String">Zonko’s Joke Shop</Value>
+          <AFAttributeCategoryRef>Building Info</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Building Type</Name>
+          <Value type="AFEnumerationValue">EnumerationSets[Building Type]\Business</Value>
+          <AFAttributeCategoryRef>Building Info</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>District</Name>
+          <Value type="String">Hogsmeade</Value>
+          <AFAttributeCategoryRef>Location</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Energy Usage</Name>
+          <AFAttributeCategoryRef>Time-Series Data</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Status</Name>
+          <AFAttributeCategoryRef>Time-Series Data</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Substation</Name>
+          <Value type="String">Edinburgh</Value>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Usage Limit</Name>
+          <UOM>kWh</UOM>
+          <Value type="Double">370</Value>
+        </AFAttribute>
+        <AFAnalysis>
+          <Name>Simulated Energy Usage</Name>
+          <Template>Simulated Energy Usage</Template>
+          <Status>Enabled</Status>
+          <Target>
+            <AFElementRef>Meters\Meter009</AFElementRef>
+          </Target>
+        </AFAnalysis>
+        <AFAnalysis>
+          <Name>Simulated Status</Name>
+          <Template>Simulated Status</Template>
+          <Status>Enabled</Status>
+          <Target>
+            <AFElementRef>Meters\Meter009</AFElementRef>
+          </Target>
+        </AFAnalysis>
+      </AFElement>
+      <AFElement ReferenceType="Parent-Child">
+        <Name>Meter010</Name>
+        <Template>MeterAdvanced</Template>
+        <AFElementCategoryRef>Measures Energy</AFElementCategoryRef>
+        <AFAttribute>
+          <Name>Building</Name>
+          <Value type="String">The Hog’s Head</Value>
+          <AFAttributeCategoryRef>Building Info</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Building Type</Name>
+          <Value type="AFEnumerationValue">EnumerationSets[Building Type]\Business</Value>
+          <AFAttributeCategoryRef>Building Info</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>District</Name>
+          <Value type="String">Hogsmeade</Value>
+          <AFAttributeCategoryRef>Location</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Energy Usage</Name>
+          <AFAttributeCategoryRef>Time-Series Data</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Status</Name>
+          <AFAttributeCategoryRef>Time-Series Data</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Substation</Name>
+          <Value type="String">London</Value>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Usage Limit</Name>
+          <UOM>kWh</UOM>
+          <Value type="Double">370</Value>
+        </AFAttribute>
+        <AFAnalysis>
+          <Name>Simulated Energy Usage</Name>
+          <Template>Simulated Energy Usage</Template>
+          <Status>Enabled</Status>
+          <Target>
+            <AFElementRef>Meters\Meter010</AFElementRef>
+          </Target>
+        </AFAnalysis>
+        <AFAnalysis>
+          <Name>Simulated Status</Name>
+          <Template>Simulated Status</Template>
+          <Status>Enabled</Status>
+          <Target>
+            <AFElementRef>Meters\Meter010</AFElementRef>
+          </Target>
+        </AFAnalysis>
+      </AFElement>
+      <AFElement ReferenceType="Parent-Child">
+        <Name>Meter011</Name>
+        <Template>MeterAdvanced</Template>
+        <AFElementCategoryRef>Measures Energy</AFElementCategoryRef>
+        <AFAttribute>
+          <Name>Building</Name>
+          <Value type="String">Dervis and Banges</Value>
+          <AFAttributeCategoryRef>Building Info</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Building Type</Name>
+          <Value type="AFEnumerationValue">EnumerationSets[Building Type]\Business</Value>
+          <AFAttributeCategoryRef>Building Info</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>District</Name>
+          <Value type="String">Hogsmeade</Value>
+          <AFAttributeCategoryRef>Location</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Energy Usage</Name>
+          <AFAttributeCategoryRef>Time-Series Data</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Status</Name>
+          <AFAttributeCategoryRef>Time-Series Data</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Substation</Name>
+          <Value type="String">Paris</Value>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Usage Limit</Name>
+          <UOM>kWh</UOM>
+          <Value type="Double">370</Value>
+        </AFAttribute>
+        <AFAnalysis>
+          <Name>Simulated Energy Usage</Name>
+          <Template>Simulated Energy Usage</Template>
+          <Status>Enabled</Status>
+          <Target>
+            <AFElementRef>Meters\Meter011</AFElementRef>
+          </Target>
+        </AFAnalysis>
+        <AFAnalysis>
+          <Name>Simulated Status</Name>
+          <Template>Simulated Status</Template>
+          <Status>Enabled</Status>
+          <Target>
+            <AFElementRef>Meters\Meter011</AFElementRef>
+          </Target>
+        </AFAnalysis>
+      </AFElement>
+      <AFElement ReferenceType="Parent-Child">
+        <Name>Meter012</Name>
+        <Template>MeterAdvanced</Template>
+        <AFElementCategoryRef>Measures Energy</AFElementCategoryRef>
+        <AFAttribute>
+          <Name>Building</Name>
+          <Value type="String">Shrieking Shack</Value>
+          <AFAttributeCategoryRef>Building Info</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Building Type</Name>
+          <Value type="AFEnumerationValue">EnumerationSets[Building Type]\Business</Value>
+          <AFAttributeCategoryRef>Building Info</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>District</Name>
+          <Value type="String">Hogsmeade</Value>
+          <AFAttributeCategoryRef>Location</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Energy Usage</Name>
+          <AFAttributeCategoryRef>Time-Series Data</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Status</Name>
+          <AFAttributeCategoryRef>Time-Series Data</AFAttributeCategoryRef>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Substation</Name>
+          <Value type="String">Prague</Value>
+        </AFAttribute>
+        <AFAttribute>
+          <Name>Usage Limit</Name>
+          <UOM>kWh</UOM>
+          <Value type="Double">370</Value>
+        </AFAttribute>
+        <AFAnalysis>
+          <Name>Simulated Energy Usage</Name>
+          <Template>Simulated Energy Usage</Template>
+          <Status>Enabled</Status>
+          <Target>
+            <AFElementRef>Meters\Meter012</AFElementRef>
+          </Target>
+        </AFAnalysis>
+        <AFAnalysis>
+          <Name>Simulated Status</Name>
+          <Template>Simulated Status</Template>
+          <Status>Enabled</Status>
+          <Target>
+            <AFElementRef>Meters\Meter012</AFElementRef>
+          </Target>
+        </AFAnalysis>
+      </AFElement>
+    </AFElement>
+    <AFElement>
+      <Name>Wizarding World</Name>
+      <AFElement ReferenceType="Parent-Child">
+        <Name>Diagon Alley</Name>
+        <Template>District</Template>
+        <AFAttribute>
+          <Name>Energy Usage</Name>
+        </AFAttribute>
+        <AFElementRef ReferenceType="Parent-Child">Meters\Meter005</AFElementRef>
+        <AFElementRef ReferenceType="Parent-Child">Meters\Meter006</AFElementRef>
+        <AFElementRef ReferenceType="Parent-Child">Meters\Meter007</AFElementRef>
+        <AFElementRef ReferenceType="Parent-Child">Meters\Meter008</AFElementRef>
+        <AFAnalysis>
+          <Name>Energy Usage Rollup</Name>
+          <Template>Energy Usage Rollup</Template>
+          <Status>Enabled</Status>
+          <Target>
+            <AFElementRef>Wizarding World\Diagon Alley</AFElementRef>
+          </Target>
+        </AFAnalysis>
+      </AFElement>
+      <AFElement ReferenceType="Parent-Child">
+        <Name>Hogsmeade</Name>
+        <Template>District</Template>
+        <AFAttribute>
+          <Name>Energy Usage</Name>
+        </AFAttribute>
+        <AFElementRef ReferenceType="Parent-Child">Meters\Meter009</AFElementRef>
+        <AFElementRef ReferenceType="Parent-Child">Meters\Meter010</AFElementRef>
+        <AFElementRef ReferenceType="Parent-Child">Meters\Meter011</AFElementRef>
+        <AFElementRef ReferenceType="Parent-Child">Meters\Meter012</AFElementRef>
+        <AFAnalysis>
+          <Name>Energy Usage Rollup</Name>
+          <Template>Energy Usage Rollup</Template>
+          <Status>Enabled</Status>
+          <Target>
+            <AFElementRef>Wizarding World\Hogsmeade</AFElementRef>
+          </Target>
+        </AFAnalysis>
+      </AFElement>
+      <AFElement ReferenceType="Parent-Child">
+        <Name>Hogwarts</Name>
+        <Template>District</Template>
+        <AFAttribute>
+          <Name>Energy Usage</Name>
+        </AFAttribute>
+        <AFElementRef ReferenceType="Parent-Child">Meters\Meter001</AFElementRef>
+        <AFElementRef ReferenceType="Parent-Child">Meters\Meter002</AFElementRef>
+        <AFElementRef ReferenceType="Parent-Child">Meters\Meter003</AFElementRef>
+        <AFElementRef ReferenceType="Parent-Child">Meters\Meter004</AFElementRef>
+        <AFAnalysis>
+          <Name>Energy Usage Rollup</Name>
+          <Template>Energy Usage Rollup</Template>
+          <Status>Enabled</Status>
+          <Target>
+            <AFElementRef>Wizarding World\Hogwarts</AFElementRef>
+          </Target>
+        </AFAnalysis>
+      </AFElement>
+    </AFElement>
+  </AFDatabase>
+</AF>
