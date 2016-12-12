@@ -1,30 +1,27 @@
-# PI-AF-SDK-AsyncToObservable
+# PI AF SDK for Begginers - OSIsoft TechCon 2016
 
-Many use cases of [async PI AF SDK methods][1] will involve making multiple async calls and awaiting their results. For example, we can make an async call for each PI Point in a collection of these objects. This query seems similar to a synchronous bulk call using PIPointList or AFListData. However, the difference is that with async, we can vary the query parameters (such as time range) for each PI Point, which is not possible with the bulk call.
+## About this content
 
-This repository contains the supporting content of the following blog post on PI Square:
-[Async with PI AF SDK: From Tasks to Observables][2]
+This repository contains the Visual Studio Exercises and Solutions from the **PI AF SDK for Begginers lab** that was given during the Users Conference 2016 in San Francisco, more specifically during the TechCon 2016 session.
 
-Make sure to refer to the post to get all the information.  The post covers the following topics:
-- Motivation
-- Problem definition
-	1. 	Find the Event Frames
-	1. 	Synchronous loop over the list of event frames
-	1. 	Parallel tasks over the event frames
-	1. 	Async calls that are processed only after all tasks complete
-	1. 	Async calls using Task.WhenAny to process tasks as they complete
-	1. 	Async calls using IObservable<T> to process tasks as they complete
-- Bulk call analogy
-- Throttling
-- References
+For the Associated User Manual and the PowerPoint presentation, they are available on PI Square.
+[PI AF SDK for Begginers lab - User Manual and Presentation][1] 
+
+##Introduction
+This course covers basic usage of the PI AF SDK. A background in .NET application development and a familiarity with the PI System (but not PI AF SDK) are assumed. An additional short introduction with reference links for PI AF SDK is available in Appendix 1 of the workbook if further background is needed.
 
 
-#Related Content
-The content in this repository can be considered as advanced content.  The reader may be interested to start with more basic content on PI AF SDK as well as about the Async topic, the following links can be of interest:
+##Topics Covered
+- Connection to the PI System and Hierarchy Basics
+- Searching for Assets
+- Reading and Writing Data
+- Building an AF Hierarchy
+- Working with Event Frames
 
-- [Working with PI AF SDK 2016 - Introduction to the blog post series][5]
-- [Async with PI AF SDK: Introduction][3]
-- [PI AF SDK Best Practices - Summary of Existing Resources][4]
+##Getting started
+1. Read the PI-AF-SDK-for-Beginners-Presentation.pdf
+2. Follow Exercises in PI-AF-SDK-for-Beginners-Workbook.pdf
+
 
 
 
@@ -45,8 +42,4 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 
-[1]:https://techsupport.osisoft.com/Documentation/PI-AF-SDK/html/af7c4d4e-e994-4349-929b-caf562be1c43.htm
-[2]:https://pisquare.osisoft.com/community/developers-club/blog/2016/11/04/asynchronous-data-access-with-pi-af-sdk-from-async-to-observable
-[3]:https://pisquare.osisoft.com/community/developers-club/blog/2016/10/24/async-with-pi-af-sdk-introduction
-[4]:https://pisquare.osisoft.com/community/developers-club/blog/2016/09/08/pi-af-sdk-best-practices-summary-of-existing-resources
-[5]:https://pisquare.osisoft.com/community/developers-club/blog/2016/06/23/working-with-af-sdk-2016-introduction
+[1]:https://pisquare.osisoft.com/docs/DOC-2194

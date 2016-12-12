@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex1-Connection-And-Hierarchy-Basics", "Ex1-Connection-And-Hierarchy-Basics\Ex1-Connection-And-Hierarchy-Basics.csproj", "{B8A590E4-2FC6-40ED-9AEF-07652B8EEC8F}"
 EndProject
@@ -22,6 +22,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex3-Reading-And-Writing-Data", "Ex3-Reading-And-Writing-Data\Ex3-Reading-And-Writing-Data.csproj", "{EBA8F603-D688-4689-AA57-41736EBD894F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ex3-Reading-And-Writing-Data-Sln", "Ex3-Reading-And-Writing-Data-Sln\Ex3-Reading-And-Writing-Data-Sln.csproj", "{ECB4566E-725E-4DAF-8543-29FCAF38FF1A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DA7066DE-0347-4F9B-A235-40A6F05F6A4F}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.txt = LICENSE.txt
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
