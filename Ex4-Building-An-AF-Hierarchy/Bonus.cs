@@ -31,7 +31,7 @@ namespace Ex4_Building_An_AF_Hierarchy
             CreateTemplates(database);
             CreateElements(database);
             SetAttributeValues(database);
-            CreateDistrictElements(database);
+            CreateCityElements(database);
             CreateWeakReferences(database);
         }
 
@@ -73,7 +73,7 @@ namespace Ex4_Building_An_AF_Hierarchy
             // Your code here
         }
 
-        static void CreateDistrictElements(AFDatabase database)
+        static void CreateCityElements(AFDatabase database)
         {
             if (database == null) return;
             // Your code here

@@ -2,10 +2,10 @@
 
 ## About this content
 
-This repository contains the Visual Studio Exercises and Solutions from the **PI AF SDK for Begginers lab** that was given during the Users Conference 2016 in San Francisco, more specifically during the TechCon 2016 session.
+This repository contains the Visual Studio Exercises and Solutions from the **PI AF SDK for Begginers lab**.  
 
 For the Associated User Manual and the PowerPoint presentation, they are available on PI Square.
-[PI AF SDK for Begginers lab - User Manual and Presentation][1] 
+[2016 - PI AF SDK for Begginers lab - User Manual and Presentation][1] 
 
 ##Introduction
 This course covers basic usage of the PI AF SDK. A background in .NET application development and a familiarity with the PI System (but not PI AF SDK) are assumed. An additional short introduction with reference links for PI AF SDK is available in Appendix 1 of the workbook if further background is needed.

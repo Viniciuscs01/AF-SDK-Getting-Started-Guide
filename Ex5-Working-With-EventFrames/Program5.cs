@@ -28,7 +28,7 @@ namespace Ex5_Working_With_EventFrames
     {
         static void Main(string[] args)
         {
-            AFDatabase database = GetDatabase("PISRV01", "Magical Power Company");
+            AFDatabase database = GetDatabase("PISRV01", "Green Power Company");
             AFElementTemplate eventframetemplate = CreateEventFrameTemplate(database);
             CreateEventFrames(database, eventframetemplate);
             CaptureValues(database, eventframetemplate);

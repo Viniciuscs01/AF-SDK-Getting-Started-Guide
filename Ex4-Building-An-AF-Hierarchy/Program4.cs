@@ -23,7 +23,7 @@ namespace Ex4_Building_An_AF_Hierarchy
     {
         static void Main(string[] args)
         {
-            AFDatabase database = GetDatabase("PISRV01", "Magical Power Company");
+            AFDatabase database = GetDatabase("PISRV01", "Green Power Company");
             CreateElementTemplate(database);
             CreateFeedersRootElement(database);
             CreateFeederElements(database);
@@ -63,8 +63,8 @@ namespace Ex4_Building_An_AF_Hierarchy
             else
                 feederTemplate = database.ElementTemplates.Add(templateName);
 
-            AFAttributeTemplate district = feederTemplate.AttributeTemplates.Add("District");
-            district.Type = typeof(string);
+            AFAttributeTemplate cityattributeTemplate = feederTemplate.AttributeTemplates.Add("City");
+            cityattributeTemplate.Type = typeof(string);
 
             AFAttributeTemplate power = feederTemplate.AttributeTemplates.Add("Power");
             power.Type = typeof(Single);

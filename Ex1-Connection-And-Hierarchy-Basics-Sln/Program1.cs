@@ -24,7 +24,7 @@ namespace Ex1_Connection_And_Hierarchy_Basics_Sln
     {
         static void Main(string[] args)
         {
-            AFDatabase database = GetDatabase("PISRV01", "Magical Power Company");
+            AFDatabase database = GetDatabase("PISRV01", "Green Power Company");
 
             PrintRootElements(database);
             PrintElementTemplates(database);

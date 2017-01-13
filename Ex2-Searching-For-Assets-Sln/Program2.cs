@@ -25,10 +25,10 @@ namespace Ex2_Searching_For_Assets_Sln
     {
         static void Main(string[] args)
         {
-            AFDatabase database = GetDatabase("PISRV01", "Magical Power Company");
+            AFDatabase database = GetDatabase("PISRV01", "Green Power Company");
             FindMetersByName(database, "Meter00*");
             FindMetersByTemplate(database, "MeterBasic");
-            FindMetersBySubstation(database, "Edinburgh");
+            FindMetersBySubstation(database, "SSA*");
             FindMetersAboveUsage(database, 300);
             FindBuildingInfo(database, "MeterAdvanced");
 

@@ -23,7 +23,7 @@ namespace Ex4_Building_An_AF_Hierarchy_Sln
     {
         static void Main(string[] args)
         {
-            AFDatabase database = GetDatabase("PISRV01", "Magical Power Company");
+            AFDatabase database = GetDatabase("PISRV01", "Green Power Company");
             CreateElementTemplate(database);
             CreateFeedersRootElement(database);
             CreateFeederElements(database);
@@ -63,8 +63,8 @@ namespace Ex4_Building_An_AF_Hierarchy_Sln
             else
                 feederTemplate = database.ElementTemplates.Add(templateName);
 
-            AFAttributeTemplate district = feederTemplate.AttributeTemplates.Add("District");
-            district.Type = typeof(string);
+            AFAttributeTemplate cityAttributeTemplate = feederTemplate.AttributeTemplates.Add("City");
+            cityAttributeTemplate.Type = typeof(string);
 
             AFAttributeTemplate power = feederTemplate.AttributeTemplates.Add("Power");
             power.Type = typeof(Single);
@@ -96,8 +96,8 @@ namespace Ex4_Building_An_AF_Hierarchy_Sln
             if (feeders.Elements.Contains("Feeder001")) return;
             AFElement feeder001 = feeders.Elements.Add("Feeder001", template);
 
-            AFAttribute district = feeder001.Attributes["District"];
-            if (district != null) district.SetValue(new AFValue("Hogwarts"));
+            AFAttribute city = feeder001.Attributes["City"];
+            if (city != null) city.SetValue(new AFValue("London"));
 
             AFAttribute power = feeder001.Attributes["Power"];
             power.ConfigString = @"\\PISRV01\SINUSOID";
@@ -109,7 +109,7 @@ namespace Ex4_Building_An_AF_Hierarchy_Sln
         {
             AFReferenceType weakRefType = database.ReferenceTypes["Weak Reference"];
 
-            AFElement hogwarts = database.Elements["Wizarding World"].Elements["Hogwarts"];
+            AFElement hogwarts = database.Elements["Geographical Locations"].Elements["London"];
             AFElement feeder0001 = database.Elements["Feeders"].Elements["Feeder001"];
             if (hogwarts == null || feeder0001 == null) return;
 
