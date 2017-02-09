@@ -25,7 +25,7 @@ namespace Ex4_Building_An_AF_Hierarchy
     {
         static void Run()
         {
-            AFDatabase database = CreateDatabase("PISRV01", "Mythical Power Company");
+            AFDatabase database = CreateDatabase("PISRV01", "Ethical Power Company");
             CreateCategories(database);
             CreateEnumerationSets(database);
             CreateTemplates(database);
