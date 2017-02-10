@@ -142,7 +142,7 @@ namespace Ex4_Building_An_AF_Hierarchy_Sln
                 energyUsageAttrTemp.Categories.Add(tsDataA);
                 energyUsageAttrTemp.DefaultUOM = uom;
                 energyUsageAttrTemp.DataReferencePlugIn = database.PISystem.DataReferencePlugIns["PI Point"];
-                energyUsageAttrTemp.ConfigString = @"\\%Server%\%Element%.%Attribute%;UOM=kWh";
+                energyUsageAttrTemp.ConfigString = @"\\%@\Configuration|PIDataArchiveName%\%Element%.%Attribute%;UOM=kWh";
             }
             else
                 meterBasicTemplate = database.ElementTemplates["MeterBasic"];
@@ -158,7 +158,7 @@ namespace Ex4_Building_An_AF_Hierarchy_Sln
                 statusAttrTemp.TypeQualifier = mStatusEnum;
                 statusAttrTemp.Categories.Add(tsDataA);
                 statusAttrTemp.DataReferencePlugIn = database.PISystem.DataReferencePlugIns["PI Point"];
-                statusAttrTemp.ConfigString = @"\\%Server%\%Element%.%Attribute%";
+                statusAttrTemp.ConfigString = @"\\%@\Configuration|PIDataArchiveName%\%Element%.%Attribute%";
 
                 // Create city Element Template
 
@@ -168,7 +168,7 @@ namespace Ex4_Building_An_AF_Hierarchy_Sln
                 cityEnergyUsageAttrTemp.Type = typeof(double);
                 cityEnergyUsageAttrTemp.DefaultUOM = uom;
                 cityEnergyUsageAttrTemp.DataReferencePlugIn = database.PISystem.DataReferencePlugIns["PI Point"];
-                cityEnergyUsageAttrTemp.ConfigString = @"\\%Server%\%Element%.%Attribute%";
+                cityEnergyUsageAttrTemp.ConfigString = @"\\%@\Configuration|PIDataArchiveName%\%Element%.%Attribute%";
             }
 
             // Do a checkin at the end instead of one-by-one.
@@ -179,6 +179,17 @@ namespace Ex4_Building_An_AF_Hierarchy_Sln
         private static void CreateElements(AFDatabase database)
         {
             if (database == null) return;
+
+            // here we create the configuration element
+            // we do a small exception creating an attribute in this method.
+            AFElement configuration;
+            if (!database.Elements.Contains("Configuration"))
+            {
+                configuration = database.Elements.Add("Configuration");
+                AFAttribute name= configuration.Attributes.Add("PIDataArchiveName");
+                name.SetValue(new AFValue("PISRV01"));
+            }
+               
 
             AFElement meters;
             if (!database.Elements.Contains("Meters"))
@@ -202,6 +213,11 @@ namespace Ex4_Building_An_AF_Hierarchy_Sln
             database.CheckIn();
         }
 
+        /// <summary>
+        /// This methods fills the static attributes for the first meter only.
+        /// In real situation, the configuration would come from a third party source e.g. xml or sql query... 
+        /// </summary>
+        /// <param name="database"></param>
         private static void SetAttributeValues(AFDatabase database)
         {
             if (database == null) return;
@@ -227,7 +243,7 @@ namespace Ex4_Building_An_AF_Hierarchy_Sln
 
                 geoLocations.Elements.Add("London", cityTemplate);
                 geoLocations.Elements.Add("Montreal", cityTemplate);
-                geoLocations.Elements.Add("San Franacisco", cityTemplate);
+                geoLocations.Elements.Add("San Francisco", cityTemplate);
             }
 
             database.CheckIn();
@@ -241,19 +257,19 @@ namespace Ex4_Building_An_AF_Hierarchy_Sln
 
             AFElement meters = database.Elements["Meters"];
 
-            AFElement london = database.Elements["Geograhical Locations"].Elements["London"];
+            AFElement london = database.Elements["Geographical Locations"].Elements["London"];
             london.Elements.Add(meters.Elements["Meter001"], weakRefType);
             london.Elements.Add(meters.Elements["Meter002"], weakRefType);
             london.Elements.Add(meters.Elements["Meter003"], weakRefType);
             london.Elements.Add(meters.Elements["Meter004"], weakRefType);
 
-            AFElement sanFrancisco = database.Elements["Geograhical Locations"].Elements["San Francisco"];
+            AFElement sanFrancisco = database.Elements["Geographical Locations"].Elements["San Francisco"];
             sanFrancisco.Elements.Add(meters.Elements["Meter005"], weakRefType);
             sanFrancisco.Elements.Add(meters.Elements["Meter006"], weakRefType);
             sanFrancisco.Elements.Add(meters.Elements["Meter007"], weakRefType);
             sanFrancisco.Elements.Add(meters.Elements["Meter008"], weakRefType);
 
-            AFElement montreal = database.Elements["Geograhical Locations"].Elements["Montreal"];
+            AFElement montreal = database.Elements["Geographical Locations"].Elements["Montreal"];
             montreal.Elements.Add(meters.Elements["Meter009"], weakRefType);
             montreal.Elements.Add(meters.Elements["Meter010"], weakRefType);
             montreal.Elements.Add(meters.Elements["Meter011"], weakRefType);

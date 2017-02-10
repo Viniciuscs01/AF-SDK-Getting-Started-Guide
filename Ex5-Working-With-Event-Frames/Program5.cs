@@ -85,6 +85,7 @@ namespace Ex5_Working_With_EventFrames_Sln
             int totalCount;
             do
             {
+                // This method returns the collection of AFBaseElement objects that were created with this template.
                 AFNamedCollectionList<AFBaseElement> results = database.ElementTemplates["MeterBasic"].FindInstantiatedElements(
                     includeDerived: true,
                     sortField: AFSortField.Name,

@@ -100,7 +100,7 @@ namespace Ex4_Building_An_AF_Hierarchy_Sln
             if (city != null) city.SetValue(new AFValue("London"));
 
             AFAttribute power = feeder001.Attributes["Power"];
-            power.ConfigString = @"\\PISRV01\SINUSOID";
+            power.ConfigString = @"%@\Configuration|PIDataArchiveName%\SINUSOID";
 
             database.CheckIn();
         }
@@ -109,11 +109,11 @@ namespace Ex4_Building_An_AF_Hierarchy_Sln
         {
             AFReferenceType weakRefType = database.ReferenceTypes["Weak Reference"];
 
-            AFElement hogwarts = database.Elements["Geographical Locations"].Elements["London"];
+            AFElement london = database.Elements["Geographical Locations"].Elements["London"];
             AFElement feeder0001 = database.Elements["Feeders"].Elements["Feeder001"];
-            if (hogwarts == null || feeder0001 == null) return;
+            if (london == null || feeder0001 == null) return;
 
-            hogwarts.Elements.Add(feeder0001, weakRefType);
+            london.Elements.Add(feeder0001, weakRefType);
 
             database.CheckIn();
         }
