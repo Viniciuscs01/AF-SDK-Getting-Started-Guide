@@ -1,4 +1,4 @@
-# PI AF SDK for Begginers - OSIsoft TechCon 2016
+# PI AF SDK for Begginers - OSIsoft TechCon 2017
 
 ## About this content
 
@@ -19,9 +19,6 @@ This course covers basic usage of the PI AF SDK. A background in .NET applicatio
 1. Read the PI-AF-SDK-for-Beginners-Presentation.pdf
 2. Follow Exercises in PI-AF-SDK-for-Beginners-Workbook.pdf
 
-
-
-
 # Licensing
 
 Copyright 2017 OSIsoft, LLC
@@ -37,6 +34,3 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-
-
-
