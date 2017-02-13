@@ -4,9 +4,6 @@
 
 This repository contains the Visual Studio Exercises and Solutions from the **PI AF SDK for Begginers lab**.  
 
-For the Associated User Manual and the PowerPoint presentation, they are available on PI Square.
-[2016 - PI AF SDK for Begginers lab - User Manual and Presentation][1] 
-
 ##Introduction
 This course covers basic usage of the PI AF SDK. A background in .NET application development and a familiarity with the PI System (but not PI AF SDK) are assumed. An additional short introduction with reference links for PI AF SDK is available in Appendix 1 of the workbook if further background is needed.
 
@@ -27,7 +24,7 @@ This course covers basic usage of the PI AF SDK. A background in .NET applicatio
 
 # Licensing
 
-Copyright 2016 OSIsoft, LLC
+Copyright 2017 OSIsoft, LLC
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -42,4 +39,4 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 
-[1]:https://pisquare.osisoft.com/docs/DOC-2194
+
