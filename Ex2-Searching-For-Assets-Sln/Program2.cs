@@ -133,12 +133,10 @@ namespace Ex2_Searching_For_Assets_Sln
 
             AFElementTemplate elemTemp = database.ElementTemplates[templateName];
             AFCategory buildingInfoCat = database.AttributeCategories["Building Info"];
-
-            AFElement root = database.Elements["Wizarding World"];
-
+            
             AFNamedCollectionList<AFAttribute> foundAttributes = AFAttribute.FindElementAttributes(
                                                     database: database,
-                                                    searchRoot: root,
+                                                    searchRoot: null,
                                                     nameFilter: "*",
                                                     elemCategory: null,
                                                     elemTemplate: elemTemp,
