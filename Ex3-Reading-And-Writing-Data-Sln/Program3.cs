@@ -61,7 +61,7 @@ namespace Ex3_Reading_And_Writing_Data_Sln
         static void PrintHistorical(AFDatabase database, string meterName, string startTime, string endTime)
         {
             Console.WriteLine(string.Format("Print Historical Values - Meter: {0}, Start: {1}, End: {2}", meterName, startTime, endTime));
-
+            
             AFAttribute attr = AFAttribute.FindAttribute(@"\Meters\" + meterName + @"|Energy Usage", database);
 
             AFTime start = new AFTime(startTime);
@@ -76,7 +76,7 @@ namespace Ex3_Reading_And_Writing_Data_Sln
 
             foreach (AFValue val in vals)
             {
-                Console.WriteLine("Timestamp (UTC): {0}, Value (kJ): {1}", val.Timestamp.UtcTime, val.Value);
+                Console.WriteLine("Timestamp (UTC): {0}, Value: {1:0.00} {2}", val.Timestamp.UtcTime, val.Value, val.UOM?.Abbreviation);
             }
             Console.WriteLine();
         }
@@ -102,7 +102,7 @@ namespace Ex3_Reading_And_Writing_Data_Sln
 
             foreach (AFValue val in vals)
             {
-                Console.WriteLine("Timestamp (Local): {0}, Value (kWh): {1}", val.Timestamp.LocalTime, val.Value);
+                Console.WriteLine("Timestamp (Local): {0}, Value: {1:0.00} {2}", val.Timestamp.LocalTime, val.Value,val?.UOM.Abbreviation);
             }
             Console.WriteLine();
         }
@@ -127,7 +127,7 @@ namespace Ex3_Reading_And_Writing_Data_Sln
 
             foreach (AFValue val in vals[AFSummaryTypes.Average])
             {
-                Console.WriteLine("Timestamp (Local): {0}, Value (kWh): {1}", val.Timestamp.LocalTime, val.Value);
+                Console.WriteLine("Timestamp (Local): {0:yyyy-MM-dd HH\\h}, Value: {1:0.00} {2}", val.Timestamp.LocalTime, val.Value,val?.UOM.Abbreviation);
             }
 
             Console.WriteLine();
@@ -145,10 +145,7 @@ namespace Ex3_Reading_And_Writing_Data_Sln
 
             foreach (AFValue val in vals)
             {
-                Console.WriteLine("Meter: {0}, Timestamp (Local): {1}, Value (kWh): {2}",
-                    val.Attribute.Element.Name,
-                    val.Timestamp.LocalTime,
-                    val.Value);
+                Console.WriteLine("Meter: {0}, Timestamp (Local): {1:yyyy-MM-dd HH\\h}, Value: {2:0.00} {3}",val.Attribute.Element.Name,val.Timestamp.LocalTime,val.Value,val?.UOM.Abbreviation);
             }
             Console.WriteLine();
         }
@@ -183,9 +180,7 @@ namespace Ex3_Reading_And_Writing_Data_Sln
                 // Loop through values per attribute
                 foreach (AFValue val in dict[AFSummaryTypes.Average])
                 {
-                    Console.WriteLine("Timestamp (Local): {0}, Avg. Value (kWh): {1}",
-                        val.Timestamp.LocalTime,
-                        val.Value);
+                    Console.WriteLine("Timestamp (Local): {0:yyyy-MM-dd}, Avg. Value: {1:0.00} {2}",val.Timestamp.LocalTime,val.Value,val?.UOM.Abbreviation);
                 }
                 Console.WriteLine();
 
