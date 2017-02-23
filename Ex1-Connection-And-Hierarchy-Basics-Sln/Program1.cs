@@ -69,9 +69,12 @@ namespace Ex1_Connection_And_Hierarchy_Basics_Sln
                     categories[i++] = category.Name;
                 }
 
-                // Note: An alternative approach is to use CategoriesString
+                
                 string categoriesString = string.Join(",", categories);
-                Console.WriteLine("Name: {0}, Categories: {1}", elemTemp.Name, elemTemp.CategoriesString);
+                Console.WriteLine("Name: {0}, Categories: {1}", elemTemp.Name, categoriesString);
+
+                // Note: An alternative approach is to use CategoriesString directly: "CategoriesString read only property returns the list of categories in a string separated by semicolons."
+                //Console.WriteLine("Name: {0}, Categories: {1}", elemTemp.Name, elemTemp.CategoriesString);
             }
 
             Console.WriteLine();
