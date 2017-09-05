@@ -1,5 +1,5 @@
 ﻿#region Copyright
-//  Copyright 2016  OSIsoft, LLC
+//  Copyright 2016, 2017  OSIsoft, LLC
 // 
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ namespace Ex1_Connection_And_Hierarchy_Basics
     {
         static void Main(string[] args)
         {
+
             AFDatabase database = GetDatabase("PISRV01", "Green Power Company");
 
             PrintRootElements(database);
@@ -33,15 +34,15 @@ namespace Ex1_Connection_And_Hierarchy_Basics
             PrintEnumerationSets(database);
             PrintCategories(database);
 
-            Console.WriteLine("Press any key to exit");
-            Console.ReadKey();
+            Console.WriteLine("Press ENTER key to close");
+            Console.ReadLine();
         }
 
         static AFDatabase GetDatabase(string server, string database)
         {
             PISystems piSystems = new PISystems();
-            PISystem piSystem = piSystems[server];
-            AFDatabase afDatabase = piSystem.Databases[database];
+            PISystem assetServer = piSystems[server];
+            AFDatabase afDatabase = assetServer.Databases[database];
             return afDatabase;
         }
 
@@ -58,27 +59,27 @@ namespace Ex1_Connection_And_Hierarchy_Basics
 
         static void PrintElementTemplates(AFDatabase database)
         {
-            // Your code here
+            /// Your code here
         }
 
         static void PrintAttributeTemplates(AFDatabase database, string elemTempName)
         {
-            // Your code here
+            /// Your code here
         }
 
         static void PrintEnergyUOMs(PISystem system)
         {
-            // Your code here
+            /// Your code here
         }
 
         static void PrintEnumerationSets(AFDatabase database)
         {
-            // Your code here
+            /// Your code here
         }
 
         static void PrintCategories(AFDatabase database)
         {
-            // Your code here
+            /// Your code here
         }
     }
 }

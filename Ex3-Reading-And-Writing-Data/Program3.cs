@@ -1,5 +1,5 @@
 ﻿#region Copyright
-//  Copyright 2016  OSIsoft, LLC
+//  Copyright 2016, 2017  OSIsoft, LLC
 // 
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ using OSIsoft.AF.Asset;
 using OSIsoft.AF.Data;
 using OSIsoft.AF.PI;
 using OSIsoft.AF.Time;
+using OSIsoft.AF.Search;
 
 namespace Ex3_Reading_And_Writing_Data
 {
@@ -36,24 +37,24 @@ namespace Ex3_Reading_And_Writing_Data
             PrintDailyAverageEnergyUsage(database, "t-7d", "t");
             SwapValues(database, "Meter001", "Meter002", "y", "y+1h");
 
-            Console.WriteLine("Press any key to exit");
-            Console.ReadKey();
+            Console.WriteLine("Press ENTER key to close");
+            Console.ReadLine();
         }
 
-        static AFDatabase GetDatabase(string servername, string databasename)
+        static AFDatabase GetDatabase(string serverName, string databaseName)
         {
-            PISystem system = GetPISystem(null, servername);
-            if (!string.IsNullOrEmpty(databasename))
-                return system.Databases[databasename];
+            PISystem assetServer = GetPISystem(null, serverName);
+            if (!string.IsNullOrEmpty(databaseName))
+                return assetServer.Databases[databaseName];
             else
-                return system.Databases.DefaultDatabase;
+                return assetServer.Databases.DefaultDatabase;
         }
 
-        static PISystem GetPISystem(PISystems systems = null, string systemname = null)
+        static PISystem GetPISystem(PISystems systems = null, string systemName = null)
         {
             systems = systems == null ? new PISystems() : systems;
-            if (!string.IsNullOrEmpty(systemname))
-                return systems[systemname];
+            if (!string.IsNullOrEmpty(systemName))
+                return systems[systemName];
             else
                 return systems.DefaultPISystem;
         }
@@ -102,7 +103,7 @@ namespace Ex3_Reading_And_Writing_Data
             AFAttributeList attrList = new AFAttributeList();
 
             // Use this method if you get stuck trying to find attributes
-            // attrList = GetAttribute();
+            // attrList = GetAttributes();
 
             // Your code here
         }
@@ -113,7 +114,7 @@ namespace Ex3_Reading_And_Writing_Data
             AFAttributeList attrList = new AFAttributeList();
 
             // Use this method if you get stuck trying to find attributes
-            // attrList = GetAttribute();
+            // attrList = GetAttributes();
         }
 
         static void SwapValues(AFDatabase database, string meter1, string meter2, string startTime, string endTime)
@@ -122,37 +123,27 @@ namespace Ex3_Reading_And_Writing_Data
             // Your code here
         }
 
-        static AFAttributeList GetAttributes(AFDatabase database)
+		// Helper method used in PrintEnergyUsageAtTime() and PrintDailyAverageEnergyUseage 
+		// Note that this is an optional method, it is used in the solutions, but it is possible
+		// to get a valid solution without using this method
+		static AFAttributeList GetAttributes(AFDatabase database, string templateName, string attributeName)
         {
-            int startIndex = 0;
-            int pageSize = 1000;
-            int totalCount;
-
             AFAttributeList attrList = new AFAttributeList();
 
-            do
+            using (AFElementSearch elementQuery = new AFElementSearch(database, "AttributeSearch", string.Format("template:\"{0}\"", templateName)))
             {
-                AFAttributeList results = AFAttribute.FindElementAttributes(
-                     database: database,
-                     searchRoot: null,
-                     nameFilter: null,
-                     elemCategory: null,
-                     elemTemplate: database.ElementTemplates["MeterBasic"],
-                     elemType: AFElementType.Any,
-                     attrNameFilter: "Energy Usage",
-                     attrCategory: null,
-                     attrType: TypeCode.Empty,
-                     searchFullHierarchy: true,
-                     sortField: AFSortField.Name,
-                     sortOrder: AFSortOrder.Ascending,
-                     startIndex: startIndex,
-                     maxCount: pageSize,
-                     totalCount: out totalCount);
-
-                attrList.AddRange(results);
-
-                startIndex += pageSize;
-            } while (startIndex < totalCount);
+                elementQuery.CacheTimeout = TimeSpan.FromMinutes(5);
+                foreach (AFElement element in elementQuery.FindElements())
+                {
+                    foreach (AFAttribute attr in element.Attributes)
+                    {
+                        if (attr.Name.Equals(attributeName))
+                        {
+                            attrList.Add(attr);
+                        }
+                    }
+                }
+            }
 
             return attrList;
         }

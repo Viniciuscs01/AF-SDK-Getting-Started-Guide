@@ -1,5 +1,5 @@
 ﻿#region Copyright
-//  Copyright 2016  OSIsoft, LLC
+//  Copyright 2016, 2017  OSIsoft, LLC
 // 
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ using System;
 using OSIsoft.AF;
 using OSIsoft.AF.Asset;
 using OSIsoft.AF.UnitsOfMeasure;
+using System.Collections.Generic;
 
 namespace Ex1_Connection_And_Hierarchy_Basics_Sln
 {
@@ -33,15 +34,15 @@ namespace Ex1_Connection_And_Hierarchy_Basics_Sln
             PrintEnumerationSets(database);
             PrintCategories(database);
 
-            Console.WriteLine("Press any key to exit");
+            Console.WriteLine("Press ENTER key to close");
             Console.ReadKey();
         }
 
         static AFDatabase GetDatabase(string server, string database)
         {
             PISystems piSystems = new PISystems();
-            PISystem piSystem = piSystems[server];
-            AFDatabase afDatabase = piSystem.Databases[database];
+            PISystem assetServer = piSystems[server];
+            AFDatabase afDatabase = assetServer.Databases[database];
             return afDatabase;
         }
 
@@ -62,19 +63,7 @@ namespace Ex1_Connection_And_Hierarchy_Basics_Sln
             AFNamedCollectionList<AFElementTemplate> elemTemplates = database.ElementTemplates.FilterBy(typeof(AFElement));
             foreach (AFElementTemplate elemTemp in elemTemplates)
             {
-                string[] categories = new string[elemTemp.Categories.Count];
-                int i = 0;
-                foreach (AFCategory category in elemTemp.Categories)
-                {
-                    categories[i++] = category.Name;
-                }
-
-                
-                string categoriesString = string.Join(",", categories);
-                Console.WriteLine("Name: {0}, Categories: {1}", elemTemp.Name, categoriesString);
-
-                // Note: An alternative approach is to use CategoriesString directly: "CategoriesString read only property returns the list of categories in a string separated by semicolons."
-                //Console.WriteLine("Name: {0}, Categories: {1}", elemTemp.Name, elemTemp.CategoriesString);
+                Console.WriteLine("Name: {0}; Categories: {1}", elemTemp.Name, elemTemp.CategoriesString);
             }
 
             Console.WriteLine();
@@ -107,16 +96,14 @@ namespace Ex1_Connection_And_Hierarchy_Basics_Sln
 
         static void PrintEnumerationSets(AFDatabase database)
         {
-            Console.WriteLine("Print Enumeration Sets\n");
+            Console.WriteLine("Print Enumeration Sets");
             AFEnumerationSets enumSets = database.EnumerationSets;
             foreach (AFEnumerationSet enumSet in enumSets)
             {
                 Console.WriteLine(enumSet.Name);
                 foreach (AFEnumerationValue state in enumSet)
                 {
-                    int stateValue = state.Value;
-                    string stateName = state.Name;
-                    Console.WriteLine("{0} - {1}", stateValue, stateName);
+                    Console.WriteLine("{0} - {1}", state.Value, state.Name);
                 }
 
                 Console.WriteLine();
@@ -125,19 +112,16 @@ namespace Ex1_Connection_And_Hierarchy_Basics_Sln
 
         static void PrintCategories(AFDatabase database)
         {
-            Console.WriteLine("Print Categories\n");
-            AFCategories elemCategories = database.ElementCategories;
-            AFCategories attrCategories = database.AttributeCategories;
-
+            Console.WriteLine("Print Categories");
             Console.WriteLine("Element Categories");
-            foreach (AFCategory category in elemCategories)
+            foreach (AFCategory category in database.ElementCategories)
             {
                 Console.WriteLine(category.Name);
             }
 
             Console.WriteLine();
             Console.WriteLine("Attribute Categories");
-            foreach (AFCategory category in attrCategories)
+            foreach (AFCategory category in database.AttributeCategories)
             {
                 Console.WriteLine(category.Name);
             }

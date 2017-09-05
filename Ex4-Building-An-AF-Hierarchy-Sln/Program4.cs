@@ -1,5 +1,5 @@
 ﻿#region Copyright
-//  Copyright 2016  OSIsoft, LLC
+//  Copyright 2016, 2017  OSIsoft, LLC
 // 
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -30,32 +30,44 @@ namespace Ex4_Building_An_AF_Hierarchy_Sln
             CreateWeakReference(database);
 
             // This bonus exercise  creates a replica database
-            //Bonus.Run();
+            // Bonus.Run();
 
-            Console.WriteLine("Press any key to exit");
-            Console.ReadKey();
+            Console.WriteLine("Completed - Press ENTER key to close");
+            Console.ReadLine();
         }
 
-        static AFDatabase GetDatabase(string servername, string databasename)
+        static AFDatabase GetDatabase(string serverName, string databaseName)
         {
-            PISystem system = GetPISystem(null, servername);
-            if (!string.IsNullOrEmpty(databasename))
-                return system.Databases[databasename];
+            Console.WriteLine("Retrieving the AF database");
+            PISystem assetServer = GetPISystem(null, serverName);
+            if (!string.IsNullOrEmpty(databaseName))
+                return assetServer.Databases[databaseName];
             else
-                return system.Databases.DefaultDatabase;
+                return assetServer.Databases.DefaultDatabase;
         }
 
-        static PISystem GetPISystem(PISystems systems = null, string systemname = null)
+        static PISystem GetPISystem(PISystems systems = null, string systemName = null)
         {
             systems = systems == null ? new PISystems() : systems;
-            if (!string.IsNullOrEmpty(systemname))
-                return systems[systemname];
+            if (!string.IsNullOrEmpty(systemName))
+                return systems[systemName];
             else
                 return systems.DefaultPISystem;
         }
 
-        static void CreateElementTemplate(AFDatabase database)
+		static void CreateFeedersRootElement(AFDatabase database)
+		{
+            Console.WriteLine("Creating the Feeders root Element");
+            if (database.Elements.Contains("Feeders"))
+				return;
+
+			database.Elements.Add("Feeders");
+			database.CheckIn();
+		}
+
+		static void CreateElementTemplate(AFDatabase database)
         {
+            Console.WriteLine("Creating the element template: FeederTemplate");
             string templateName = "FeederTemplate";
             AFElementTemplate feederTemplate;
             if (database.ElementTemplates.Contains(templateName))
@@ -75,19 +87,10 @@ namespace Ex4_Building_An_AF_Hierarchy_Sln
             database.CheckIn();
         }
 
-        static void CreateFeedersRootElement(AFDatabase database)
-        {
-            if (database.Elements.Contains("Feeders"))
-                return;
-            else
-            {
-                database.Elements.Add("Feeders");
-            }
-            database.CheckIn();
-        }
-
         static void CreateFeederElements(AFDatabase database)
         {
+
+            Console.WriteLine("Creating a feeder element under the Feeders Element");
             AFElementTemplate template = database.ElementTemplates["FeederTemplate"];
 
             AFElement feeders = database.Elements["Feeders"];
@@ -102,20 +105,24 @@ namespace Ex4_Building_An_AF_Hierarchy_Sln
             AFAttribute power = feeder001.Attributes["Power"];
             power.ConfigString = @"%@\Configuration|PIDataArchiveName%\SINUSOID";
 
-            database.CheckIn();
+			if (database.IsDirty)
+				database.CheckIn();
         }
 
         static void CreateWeakReference(AFDatabase database)
         {
+
+            Console.WriteLine("Adding a week reference of the Feeder001 under London");
             AFReferenceType weakRefType = database.ReferenceTypes["Weak Reference"];
 
             AFElement london = database.Elements["Geographical Locations"].Elements["London"];
             AFElement feeder0001 = database.Elements["Feeders"].Elements["Feeder001"];
             if (london == null || feeder0001 == null) return;
 
-            london.Elements.Add(feeder0001, weakRefType);
-
-            database.CheckIn();
+			if (!london.Elements.Contains(feeder0001))
+				london.Elements.Add(feeder0001, weakRefType);
+			if (database.IsDirty)
+				database.CheckIn();
         }
     }
 }
